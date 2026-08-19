@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEROLITE</title>
+    <meta name="description" content="Discover Verolite - Light beyond imagination. Illuminate every moment with our premium lighting collections.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
+</head>
+    <!-- Hero Screen (100vh First Page) -->
+    <div class="hero-screen">
+        <header class="navbar">
+            <a href="#" class="logo-link" aria-label="VEROLITE">
+                <img src="logo.png" alt="VEROLITE" class="logo-img">
+            </a>
+            <nav>
+                <a href="#" class="active">HOME</a>
+                <a href="#about">ABOUT US</a>
+                <div class="nav-dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        PRODUCTS
+                        <svg class="dropdown-arrow" width="9" height="6" viewBox="0 0 10 6" fill="currentColor">
+                            <polygon points="0,0 10,0 5,6" />
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Architectural Indoor Lighting</a>
+                        <a href="#" class="dropdown-item">Architectural Facade Lighting</a>
+                        <a href="#" class="dropdown-item">Commercial Lighting Design</a>
+                        <a href="#" class="dropdown-item">Commercial LED Lighting</a>
+                        <a href="#" class="dropdown-item">LED Track Lighting Interior</a>
+                        <a href="#" class="dropdown-item">Linear LED Lighting</a>
+                        <a href="#" class="dropdown-item">Modern Office Lighting</a>
+                        <a href="#" class="dropdown-item">Hotel Lighting Design</a>
+                        <a href="#" class="dropdown-item">Retail Lighting Design</a>
+                        <a href="#" class="dropdown-item">Outdoor Architectural Lighting</a>
+                    </div>
+                </div>
+                <a href="#">CATALOGUE</a>
+                <a href="#contact">CONTACT US</a>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    LIGHT<br>BEYOND<br>IMAGINATION.
+                </h1>
+                <p class="hero-subtitle">ILLUMINATE EVERY MOMENT.</p>
+                
+                <div class="hero-actions">
+                    <a href="#collections" class="btn-primary">
+                        EXPLORE COLLECTIONS 
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="#collections" class="btn-secondary">
+                        <span class="icon-circle">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </span>
+                        VIEW LOOKBOOK
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image"></div>
+        </main>
+
+        <div class="tagline-banner">
+            <div class="tagline-inner">
+                <span class="tagline-word tag-illuminate">ILLUMINATE</span>
+                <span class="tagline-divider">|</span>
+                <span class="tagline-word tag-inspire">INSPIRE</span>
+                <span class="tagline-divider">|</span>
+                <span class="tagline-word tag-transform">TRANSFORM</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collections Carousel Section -->
+    <section class="collections-section" id="collections" aria-label="Collections Carousel">
+        <div class="carousel-wrapper">
+            <div class="carousel-nav-buttons">
+                <button class="carousel-btn prev-btn" id="carouselPrev" aria-label="Scroll Left">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button class="carousel-btn next-btn" id="carouselNext" aria-label="Scroll Right">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="carousel-track-container" id="carouselContainer">
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Set 1 -->
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-1.jpg" alt="Architectural Indoor Lighting">
+                        </div>
+                        <div class="card-title">ARCHITECTURAL INDOOR LIGHTING</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-2.jpg" alt="Architectural Facade Lighting">
+                        </div>
+                        <div class="card-title">ARCHITECTURAL FACADE LIGHTING</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-3.jpg" alt="Commercial Lighting Design">
+                        </div>
+                        <div class="card-title">COMMERCIAL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-4.jpg" alt="Commercial LED Lighting">
+                        </div>
+                        <div class="card-title">COMMERCIAL LED LIGHTING</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-5.jpg" alt="LED Track Lighting Interior">
+                        </div>
+                        <div class="card-title">LED TRACK LIGHTING INTERIOR</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-6.jpg" alt="Linear LED Lighting">
+                        </div>
+                        <div class="card-title">LINEAR LED LIGHTING</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-7.jpg" alt="Modern Office Lighting">
+                        </div>
+                        <div class="card-title">MODERN OFFICE LIGHTING</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-8.jpg" alt="Hotel Lighting Design">
+                        </div>
+                        <div class="card-title">HOTEL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-9.jpg" alt="Retail Lighting Design">
+                        </div>
+                        <div class="card-title">RETAIL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/collection-10.jpg" alt="Outdoor Architectural Lighting">
+                        </div>
+                        <div class="card-title">OUTDOOR ARCHITECTURAL LIGHTING</div>
+                    </div>
+
+                    <!-- Set 2 (for seamless continuous infinite looping) -->
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-1.jpg" alt="Architectural Indoor Lighting">
+                        </div>
+                        <div class="card-title">ARCHITECTURAL INDOOR LIGHTING</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-2.jpg" alt="Architectural Facade Lighting">
+                        </div>
+                        <div class="card-title">ARCHITECTURAL FACADE LIGHTING</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-3.jpg" alt="Commercial Lighting Design">
+                        </div>
+                        <div class="card-title">COMMERCIAL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-4.jpg" alt="Commercial LED Lighting">
+                        </div>
+                        <div class="card-title">COMMERCIAL LED LIGHTING</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-5.jpg" alt="LED Track Lighting Interior">
+                        </div>
+                        <div class="card-title">LED TRACK LIGHTING INTERIOR</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-6.jpg" alt="Linear LED Lighting">
+                        </div>
+                        <div class="card-title">LINEAR LED LIGHTING</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-7.jpg" alt="Modern Office Lighting">
+                        </div>
+                        <div class="card-title">MODERN OFFICE LIGHTING</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-8.jpg" alt="Hotel Lighting Design">
+                        </div>
+                        <div class="card-title">HOTEL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-9.jpg" alt="Retail Lighting Design">
+                        </div>
+                        <div class="card-title">RETAIL LIGHTING DESIGN</div>
+                    </div>
+                    <div class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/collection-10.jpg" alt="Outdoor Architectural Lighting">
+                        </div>
+                        <div class="card-title">OUTDOOR ARCHITECTURAL LIGHTING</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collections-footer">
+                <a href="#" class="view-all-btn">
+                    <span>VIEW ALL</span>
+                    <span class="arrow-icon">
+                        <svg width="40" height="12" viewBox="0 0 46 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter">
+                            <line x1="0" y1="6" x2="40" y2="6"></line>
+                            <polyline points="32 1 40 6 32 11"></polyline>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about" aria-label="About Verolite">
+        <div class="about-container">
+            <div class="about-content">
+                <div class="about-tag-wrap animate-item" data-delay="100">
+                    <span class="about-tag">ABOUT US</span>
+                    <div class="about-tag-line"></div>
+                </div>
+                
+                <h2 class="about-heading animate-item" data-delay="200">
+                    <span class="heading-line split-letters">Crafting Light.</span>
+                    <span class="heading-line split-letters">Elevating Spaces.</span>
+                </h2>
+                
+                <p class="about-description animate-item" data-delay="400">
+                    At Verolite, we believe that lighting is more than illumination — it's an experience. Our mission is to create lighting solutions that blend innovation, precision and aesthetics to transform the way spaces look and feel.
+                </p>
+                
+                <div class="about-btn-wrap animate-item" data-delay="550">
+                    <a href="#" class="about-btn">
+                        <span>OUR STORY</span>
+                        <span class="about-arrow">
+                            <svg width="22" height="12" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="0" y1="6" x2="20" y2="6"></line>
+                                <polyline points="14 1 20 6 14 11"></polyline>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="about-image-col animate-item" data-delay="300">
+                <div class="about-image-wrapper" id="aboutImageWrapper">
+                    <div class="about-image-glow"></div>
+                    <div class="about-light-shimmer"></div>
+                    <div class="about-spotlight-flare" id="aboutSpotlightFlare"></div>
+                    <img src="images/about-img.jpg" alt="Verolite - Crafting Light and Elevating Spaces" id="aboutImg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="site-footer" id="contact" aria-label="Verolite Footer">
+        <!-- Top Footer CTA Banner -->
+        <div class="footer-cta-wrap">
+            <div class="footer-cta-inner">
+                <div class="footer-cta-text">
+                    <span class="cta-subtitle">EXCLUSIVITY & INNOVATION</span>
+                    <h3 class="cta-title">Illuminate Your Next Architectural Vision.</h3>
+                </div>
+                <form class="footer-newsletter-form" onsubmit="event.preventDefault();">
+                    <div class="input-group">
+                        <input type="email" placeholder="Enter your email address" aria-label="Email address" required>
+                        <button type="submit" class="newsletter-btn">
+                            <span>SUBSCRIBE</span>
+                            <svg width="18" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="0" y1="6" x2="20" y2="6"></line>
+                                <polyline points="14 1 20 6 14 11"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Footer Content -->
+        <div class="footer-main">
+            <div class="footer-container">
+                <!-- Col 1: Brand Info -->
+                <div class="footer-col footer-brand-col">
+                    <a href="#" class="footer-logo-link" aria-label="VEROLITE Home">
+                        <img src="logo.png" alt="VEROLITE" class="footer-logo">
+                    </a>
+                    <p class="footer-brand-desc">
+                        Engineering bespoke lighting fixtures that merge innovative LED optics with sculptural architectural elegance. Light beyond imagination.
+                    </p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Pinterest">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.4 9.3-.09-.78-.17-1.98.04-2.83.19-.77 1.23-5.23 1.23-5.23s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.58 2.26-.87 3.51-.25 1.05.53 1.91 1.56 1.91 1.88 0 3.32-1.98 3.32-4.84 0-2.53-1.82-4.3-4.42-4.3-3.01 0-4.78 2.26-4.78 4.59 0 .91.35 1.88.79 2.41.09.1.1.19.07.33-.08.33-.26 1.07-.3 1.22-.05.21-.17.26-.39.16-1.44-.67-2.34-2.77-2.34-4.46 0-3.63 2.64-6.97 7.61-6.97 3.99 0 7.1 2.85 7.1 6.65 0 3.97-2.5 7.16-5.97 7.16-1.17 0-2.26-.61-2.64-1.33l-.72 2.74c-.26 1-.96 2.25-1.43 3.01 1.08.33 2.23.51 3.42.51 5.52 0 10-4.48 10-10S17.52 2 12 2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Behance">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h6a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3H3V8z"></path><path d="M3 14h7a3.5 3.5 0 0 1 3.5 3.5v0a3.5 3.5 0 0 1-3.5 3.5H3V14z"></path><path d="M15 13.5a3.5 3.5 0 1 0 7 0v-1a3.5 3.5 0 0 0-7 0v1z"></path><line x1="16" y1="9" x2="21" y2="9"></line></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">NAVIGATION</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#collections">Products & Collections</a></li>
+                        <li><a href="#">Digital Catalogue</a></li>
+                        <li><a href="#">Lookbook 2026</a></li>
+                        <li><a href="#contact">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Product Portfolio -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">COLLECTIONS</h4>
+                    <ul class="footer-links">
+                        <li><a href="#collections">Architectural Indoor</a></li>
+                        <li><a href="#collections">Facade Illumination</a></li>
+                        <li><a href="#collections">Commercial LED</a></li>
+                        <li><a href="#collections">Track Light Systems</a></li>
+                        <li><a href="#collections">Linear LED Profiles</a></li>
+                        <li><a href="#collections">Hospitality & Retail</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Studio Contact -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">STUDIO & INQUIRIES</h4>
+                    <div class="footer-contact-info">
+                        <p class="contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <span>Design District 44, London, UK</span>
+                        </p>
+                        <p class="contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <a href="mailto:inquiries@verolite.co.uk">inquiries@verolite.co.uk</a>
+                        </p>
+                        <p class="contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            <span>+44 (0) 20 7946 0912</span>
+                        </p>
+                        <p class="contact-hours">
+                            Studio Hours: Mon — Fri, 09:00 — 18:00 GMT
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-inner">
+                <div class="footer-copy">
+                    &copy; 2026 VEROLITE Lighting Design Ltd. All rights reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <span class="dot">•</span>
+                    <a href="#">Terms & Conditions</a>
+                    <span class="dot">•</span>
+                    <a href="#">Cookie Settings</a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Back to top">
+                    <span>TOP</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

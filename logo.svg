@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 295 66" width="100%" height="100%" class="verolite-brand-logo">
+  <g fill="#FFFFFF">
+    <!-- V -->
+    <path d="M 10 12 L 23 50 H 32 L 45 12 H 35.5 L 27.5 38.5 L 19.5 12 Z" />
+
+    <!-- E -->
+    <path d="M 51 12 H 59.5 V 50 H 51 Z" />
+    <path d="M 59.5 42.5 H 75 V 50 H 59.5 Z" />
+    <path d="M 59.5 27.25 H 72 V 34.75 H 59.5 Z" />
+    
+    <!-- Top bridge extending from E to R -->
+    <path d="M 51 12 H 100 V 19.5 H 59.5 V 12 Z" />
+
+    <!-- R -->
+    <path d="M 76 19.5 H 84.5 V 50 H 76 Z" />
+    <!-- R Upper Bowl -->
+    <path d="M 84.5 12 H 100 C 107.5 12 112.5 16 112.5 23.5 C 112.5 31 107.5 35 100 35 H 84.5 V 27.5 H 100 C 103 27.5 104.5 25.5 104.5 23.5 C 104.5 21.5 103 19.5 100 19.5 H 84.5 Z" />
+    <!-- R Diagonal Leg -->
+    <path d="M 84.5 33 H 97 L 112.5 50 H 101 L 88.5 35.5 H 84.5 Z" />
+
+    <!-- O: Segmented Aperture Light Ring (8 Segments) -->
+    <path d="M 142.99 12.03 A 19.0 19.0 0 0 1 154.71 16.88 L 149.03 23.20 A 10.5 10.5 0 0 0 142.55 20.51 Z" fill="#55585b" />
+    <path d="M 156.12 18.29 A 19.0 19.0 0 0 1 160.97 30.01 L 152.49 30.45 A 10.5 10.5 0 0 0 149.80 23.97 Z" fill="#76797d" />
+    <path d="M 160.97 31.99 A 19.0 19.0 0 0 1 156.12 43.71 L 149.80 38.03 A 10.5 10.5 0 0 0 152.49 31.55 Z" fill="#9ea2a6" />
+    <path d="M 154.71 45.12 A 19.0 19.0 0 0 1 142.99 49.97 L 142.55 41.49 A 10.5 10.5 0 0 0 149.03 38.80 Z" fill="#c2c5c9" />
+    <path d="M 141.01 49.97 A 19.0 19.0 0 0 1 129.29 45.12 L 134.97 38.80 A 10.5 10.5 0 0 0 141.45 41.49 Z" fill="#dedfe1" />
+    <path d="M 127.88 43.71 A 19.0 19.0 0 0 1 123.03 31.99 L 131.51 31.55 A 10.5 10.5 0 0 0 134.20 38.03 Z" fill="#f0f0f2" />
+    <path d="M 123.03 30.01 A 19.0 19.0 0 0 1 127.88 18.29 L 134.20 23.97 A 10.5 10.5 0 0 0 131.51 30.45 Z" fill="#ffffff" />
+    <path d="M 129.29 16.88 A 19.0 19.0 0 0 1 141.01 12.03 L 141.45 20.51 A 10.5 10.5 0 0 0 134.97 23.20 Z" fill="#ffffff" />
+
+    <!-- L -->
+    <path d="M 174 12 H 182.5 V 42.5 H 197 V 50 H 174 Z" />
+
+    <!-- I -->
+    <path d="M 205 12 H 213.5 V 50 H 205 Z" />
+
+    <!-- T -->
+    <path d="M 221 12 H 246 V 19.5 H 237.75 V 50 H 229.25 V 19.5 H 221 Z" />
+
+    <!-- E (Three futuristic horizontal bars) -->
+    <path d="M 252 12 H 275 V 19.5 H 252 Z" />
+    <path d="M 252 27.25 H 275 V 34.75 H 252 Z" />
+    <path d="M 252 42.5 H 275 V 50 H 252 Z" />
+  </g>
+
+  <!-- Brand URL subtext -->
+  <text x="275" y="62.5" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" letter-spacing="1.8" fill="#D0D0D0" text-anchor="end">VEROLITE.CO.UK</text>
+</svg>
