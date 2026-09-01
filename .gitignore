@@ -1,0 +1,8 @@
+*.zip
+
+scratch_*/
+*.mp4
+node_modules/
+.next/
+dist/
+build/

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | VEROLITE - Architectural Lighting Consultations</title>
+    <meta name="description" content="Get in touch with Verolite's architectural lighting specialists for bespoke project consultations, technical specifications, photometric data, and lighting inquiries.">
+    <link rel="stylesheet" href="style.css?v=noboxdrop">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
+    <style>
+        .contact-page {
+            background-color: #f7f7f8;
+            color: #111111;
+            min-height: 100vh;
+        }
+
+        .contact-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e4e8;
+            padding: 24px 80px 20px;
+        }
+
+        .contact-navbar .logo-img {
+            filter: brightness(0);
+        }
+
+        .contact-navbar nav a,
+        .contact-navbar .dropdown-toggle {
+            color: #111111 !important;
+        }
+
+        .contact-navbar nav > a.active::after {
+            background-color: #111111 !important;
+        }
+
+        .contact-hero-banner {
+            background: #0d0e12;
+            color: #ffffff;
+            padding: 90px 40px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-hero-tag {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        .contact-hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(34px, 4.5vw, 56px);
+            font-weight: 500;
+            letter-spacing: 2px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .contact-hero-subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(14px, 1.2vw, 16px);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Contact Layout */
+        .contact-section {
+            padding: 80px 40px 100px;
+        }
+
+        .contact-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* Left Column: Direct Info */
+        .contact-info-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 48px 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .info-card-title {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: #111111;
+        }
+
+        .info-card-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666666;
+            margin-bottom: 36px;
+        }
+
+        .contact-details-list {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #f0f1f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #111111;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #888888;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111111;
+            line-height: 1.4;
+        }
+
+        .detail-value a {
+            color: #111111;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .detail-value a:hover {
+            color: #555555;
+            text-decoration: underline;
+        }
+
+        .contact-services-badge {
+            background: #f9fafb;
+            border: 1px dashed #d1d5db;
+            padding: 22px 24px;
+            border-radius: 4px;
+        }
+
+        .badge-title {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #111111;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .badge-text {
+            font-size: 13px;
+            color: #555555;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Right Column: Inquiry Form */
+        .contact-form-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 48px 44px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-card-header {
+            margin-bottom: 32px;
+        }
+
+        .form-title {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: #111111;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .inquiry-form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #222222;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #fdfdfd;
+            border: 1px solid #d1d5db;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: #111111;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #111111;
+            box-shadow: 0 0 0 1px #111111;
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-inquiry-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 36px;
+            background: #111111;
+            color: #ffffff;
+            border: none;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-inquiry-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-success-toast {
+            display: none;
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 16px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 18px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .contact-navbar {
+                padding: 20px 24px;
+            }
+            .contact-section {
+                padding: 50px 20px 70px;
+            }
+            .contact-form-card,
+            .contact-info-card {
+                padding: 32px 24px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="contact-page">
+    <!-- Navbar Header -->
+    <header class="navbar contact-navbar">
+        <a href="index.html" class="logo-link" aria-label="VEROLITE">
+            <img src="logo.png" alt="VEROLITE" class="logo-img">
+        </a>
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="about.html">ABOUT US</a>
+            <div class="nav-dropdown">
+                <a href="index.html#collections" class="dropdown-toggle">
+                    PRODUCTS
+                    <svg class="dropdown-arrow" width="9" height="6" viewBox="0 0 10 6" fill="currentColor">
+                        <polygon points="0,0 10,0 5,6" />
+                    </svg>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="recessed-led-down-lights.html" class="dropdown-item">Recessed LED Down Lights</a>
+                    <a href="led-surface-down-lights.html" class="dropdown-item">LED Surface Down Lights</a>
+                    <a href="3phase-track-lights.html" class="dropdown-item">3-Phase Track Lights</a>
+                    <a href="led-garden-lights.html" class="dropdown-item">LED Garden Lights</a>
+                    <a href="led-strip-lights.html" class="dropdown-item">LED Strip Lights</a>
+                    <a href="led-outdoor-flexible-neon-light.html" class="dropdown-item">LED Outdoor Flexible Neon Light</a>
+                    <a href="led-magnetic-track-lights.html" class="dropdown-item">LED Magnetic Track Lights</a>
+                    <a href="office-linear-lights.html" class="dropdown-item">Office Lights</a>
+                    <a href="led-strip-light-drivers.html" class="dropdown-item">LED Strip Light Drivers</a>
+                    <a href="led-phase-cut-dimmer.html" class="dropdown-item">LED Phase Cut Dimmer</a>
+                    <a href="led-sensor-switches.html" class="dropdown-item">LED Sensor Switches</a>
+                </div>
+            </div>
+            <a href="contact.html" class="active">CONTACT US</a>
+        </nav>
+    </header>
+
+    <!-- Dark Architectural Contact Hero Banner -->
+    <section class="contact-hero-banner" aria-label="Contact Verolite">
+        <div class="contact-hero-content">
+            <h1 class="contact-hero-title">LET'S ILLUMINATE YOUR VISION</h1>
+            <p class="contact-hero-subtitle">
+                Connect with Verolite's architectural lighting specialists for project consultations, technical luminaire specifications, photometric data, or bespoke inquiries.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Contact & Inquiry Section -->
+    <main class="contact-section">
+        <div class="contact-container">
+            
+            <!-- Left Column: Direct Contact Info -->
+            <div class="contact-info-card">
+                <h2 class="info-card-title">Direct Inquiries</h2>
+                <p class="info-card-desc">
+                    Our specification team assists architects, lighting designers, and developers across the UK, Europe, and international markets.
+                </p>
+
+                <div class="contact-details-list">
+                    <!-- Headquarters -->
+                    <div class="contact-detail-item">
+                        <div class="detail-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="detail-label">Location & Studio</div>
+                            <div class="detail-value">London, United Kingdom</div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="contact-detail-item">
+                        <div class="detail-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="detail-label">Email Inquiries</div>
+                            <div class="detail-value">
+                                <a href="mailto:info@verolite.co.uk">info@verolite.co.uk</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="contact-detail-item">
+                        <div class="detail-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="detail-label">Telephone</div>
+                            <div class="detail-value">
+                                <a href="tel:+442079460920">+44 (0) 20 7946 0920</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hours -->
+                    <div class="contact-detail-item">
+                        <div class="detail-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="detail-label">Operating Hours</div>
+                            <div class="detail-value">Mon – Fri: 08:30 – 18:00 GMT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-services-badge">
+                    <div class="badge-title">Specification Services</div>
+                    <p class="badge-text">
+                        Complimentary photometric files (IES / LDT), Dialux architectural calculations, custom luminaire finishing, and project tenders.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column: Project Inquiry Form -->
+            <div class="contact-form-card">
+                <div class="form-card-header">
+                    <h2 class="form-title">Send a Message</h2>
+                    <p class="form-subtitle">Fill out the form below and an architectural consultant will respond within 24 business hours.</p>
+                </div>
+
+                <form class="inquiry-form" id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="e.g. Alexander Vance" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailAddress">Email Address *</label>
+                            <input type="email" id="emailAddress" name="emailAddress" placeholder="e.g. alexander@studio.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone / WhatsApp</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+44 ...">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType">Project Application</label>
+                            <select id="projectType" name="projectType">
+                                <option value="luxury-residential">Luxury Residential</option>
+                                <option value="commercial-office">Commercial & Office</option>
+                                <option value="hospitality-hotel">Hospitality & Restaurant</option>
+                                <option value="retail-gallery">Retail & Gallery</option>
+                                <option value="landscape-exterior">Landscape & Exterior Neon</option>
+                                <option value="other">General Technical Inquiry</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Project Requirements & Inquiries *</label>
+                        <textarea id="message" name="message" placeholder="Please describe your lighting project, desired luminaire series, quantities, or technical specifications..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-inquiry-btn">
+                        <span>SEND INQUIRY</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="form-success-toast" id="formToast">
+                        <strong>Thank you!</strong> Your inquiry has been received. A Verolite architectural lighting specialist will review your request and get back to you shortly.
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer" aria-label="Verolite Footer">
+        <!-- Main Footer Content -->
+        <div class="footer-main">
+            <div class="footer-container">
+                <!-- Col 1: Brand Info -->
+                <div class="footer-col footer-brand-col">
+                    <a href="index.html" class="footer-logo-link" aria-label="VEROLITE Home">
+                        <img src="logo.png" alt="VEROLITE" class="footer-logo">
+                    </a>
+                    <p class="footer-brand-desc">
+                        Engineering bespoke lighting fixtures that merge innovative LED optics with sculptural architectural elegance. Light beyond imagination.
+                    </p>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">NAVIGATION</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="index.html#collections">Products & Collections</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-inner">
+                <div class="footer-copy">
+                    &copy; 2026 VEROLITE Lighting Design Ltd. All rights reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#privacy">Privacy Policy</a>
+                    <span class="dot">•</span>
+                    <a href="#terms">Terms & Conditions</a>
+                    <span class="dot">•</span>
+                    <a href="#cookies">Cookie Settings</a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">TOP &Hat;</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const toast = document.getElementById('formToast');
+            toast.style.display = 'block';
+            document.getElementById('contactForm').reset();
+            setTimeout(() => {
+                toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+    </script>
+</body>
+</html>

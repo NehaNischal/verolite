@@ -1,0 +1,472 @@
+/* Standalone styling for Recessed LED Down Light page */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: #f4f4f6 !important;
+    background: #f4f4f6 !important;
+    color: #111111 !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    width: 100%;
+    min-height: 100vh;
+}
+
+body::before, body::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Hero Screen with recessed spotlight image background & index.html navbar */
+.recessed-hero-screen {
+    min-height: 520px;
+    height: 62vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.65) 100%), url('images/recessed-hero-banner.jpg') center/cover no-repeat !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.outdoor-hero-screen {
+    min-height: 580px;
+    height: 70vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/outdoor-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.strip-hero-screen {
+    min-height: 580px;
+    height: 70vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.65) 100%), url('images/strip-hero-banner.jpg') center bottom / cover no-repeat !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.surface-hero-screen {
+    min-height: 580px;
+    height: 70vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.4) 100%), url('images/surface-hero-banner.jpg?v=new2') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.track-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.45) 100%), url('images/track-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.garden-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/garden-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.garden-hero-screen .garden-page-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    margin: 0;
+}
+
+.sensor-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/sensors/sensor-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.driver-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/drivers/driver-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.dimmer-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/dimmer/dimmer-hero-banner.jpg?v=wide') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.office-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/office-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.magnetic-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/magnetic-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.recessed-hero-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 40px 60px;
+    z-index: 10;
+}
+
+.recessed-hero-main-title {
+    font-size: 52px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 6px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+.outdoor-hero-main-title {
+    font-size: clamp(30px, 3.8vw, 48px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: 6px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.8);
+    max-width: 1100px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.outdoor-hero-sub-title {
+    font-size: 14px !important;
+    letter-spacing: 4px !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+}
+
+/* Product Grid */
+.ref-grid-section {
+    background-color: #f4f4f6 !important;
+    background: #f4f4f6 !important;
+    padding: 40px 40px 100px;
+    width: 100%;
+}
+
+.ref-grid-container {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.ref-products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 20px 18px !important;
+    width: 100%;
+}
+
+@media (min-width: 1400px) {
+    .ref-products-grid.grid-5-col,
+    .ref-products-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 20px 18px !important;
+    }
+}
+
+.ref-products-grid.grid-centered {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 20px 18px !important;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.ref-products-grid.grid-centered .ref-card {
+    width: calc(20% - 15px) !important;
+    min-width: 200px !important;
+    max-width: 260px !important;
+    flex: 0 1 calc(20% - 15px) !important;
+}
+
+/* Product Cards */
+.ref-card {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1px solid #e1e1e1 !important;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none !important;
+    color: #111111 !important;
+    opacity: 0;
+    transform: translateY(35px) scale(0.97);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+    cursor: pointer;
+    will-change: opacity, transform;
+}
+
+.ref-card.ref-card-visible {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+.ref-card:hover {
+    border-color: #111111 !important;
+    transform: translateY(-8px) scale(1.015) !important;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ref-card-img-box {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: #f8f8f8 !important;
+    background: #f8f8f8 !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.ref-card-img-box img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ref-card:hover .ref-card-img-box img {
+    transform: scale(1.08);
+}
+
+.ref-card-info {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+.ref-card-title {
+    font-size: 12.5px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
+    color: #111111 !important;
+}
+
+.ref-card-title .prefix {
+    font-weight: 300;
+    color: #111111 !important;
+}
+
+.ref-card-title .name {
+    font-weight: 800;
+    color: #111111 !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.ref-card-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10.5px;
+    color: #777777 !important;
+    margin-top: 2px;
+}
+
+.ref-card-link .link-text {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: #777777 !important;
+    transition: color 0.2s ease;
+}
+
+.ref-card-link .link-arrow {
+    font-size: 12px;
+    transition: transform 0.2s ease, color 0.2s ease;
+    color: #777777 !important;
+}
+
+.ref-card:hover .ref-card-link .link-text {
+    color: #111111 !important;
+}
+
+.ref-card:hover .ref-card-link .link-arrow {
+    transform: translateX(4px);
+    color: #111111 !important;
+}
+
+/* Floating WhatsApp Widget */
+.lumi-whatsapp-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999;
+}
+
+.whatsapp-pill {
+    background: #25D366;
+    color: #ffffff !important;
+    padding: 10px 18px;
+    border-radius: 30px;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.whatsapp-pill:hover {
+    transform: scale(1.04);
+    box-shadow: 0 10px 28px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-avatar {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.whatsapp-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #25D366;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+    .ref-products-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 12px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .ref-products-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px !important;
+    }
+    .ref-grid-section {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ref-products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    .recessed-hero-title {
+        font-size: 36px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .ref-products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+}
+
+/* White Navbar Header System */
+header.ref-header-light {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+}
+
+header.ref-header-light nav a,
+header.ref-header-light nav .dropdown-toggle {
+    color: #111111 !important;
+}
+
+header.ref-header-light nav a:hover,
+header.ref-header-light nav .dropdown-toggle:hover {
+    color: #555555 !important;
+}
+
+header.ref-header-light .logo-img {
+    filter: brightness(0) !important;
+}
