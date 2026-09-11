@@ -5,6 +5,10 @@ export default defineCliConfig({
     projectId: '5nckxq6b',
     dataset: 'production'
   },
+  vite: (config) => ({
+    ...config,
+    base: '/studio/',
+  }),
   deployment: {
     /**
      * Enable auto-updates for studios.

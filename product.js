@@ -45,14 +45,16 @@
         const urlParams = new URLSearchParams(window.location.search);
         let slug = urlParams.get('slug');
 
-        if (!slug) {
+        if (!slug || slug === 'undefined' || slug === 'null') {
             const pathParts = window.location.pathname.split('/').filter(Boolean);
             if (pathParts.length >= 2 && (pathParts[0] === 'products' || pathParts[0] === 'product')) {
                 slug = pathParts[1].replace('.html', '');
             }
         }
 
-        return slug ? slug.trim() : null;
+        if (slug === 'undefined' || slug === 'null') slug = null;
+
+        return slug ? decodeURIComponent(slug).trim() : null;
     }
 
     // Convert Sanity Image Asset reference to direct CDN URL
@@ -75,17 +77,10 @@
 
     // Query Sanity API using GROQ
     async function fetchSanityProduct(slug) {
-        const cleanSlug = slug.toLowerCase();
-        const baseSlug = cleanSlug.replace(/-sample$/, '');
-        const sampleSlug = `${baseSlug}-sample`;
+        if (!slug) return null;
 
-        const groq = `*[_type == "product" && (
-            slug.current == "${cleanSlug}" ||
-            slug.current == "${baseSlug}" ||
-            slug.current == "${sampleSlug}" ||
-            lower(name) == "${cleanSlug}" ||
-            lower(model) == "${cleanSlug}"
-        )][0]{
+        const cleanSlug = slug.trim();
+        const groq = `*[_type == "product" && !(_id in path("drafts.**")) && slug.current == "${cleanSlug}"][0]{
             _id,
             name,
             model,
@@ -113,9 +108,9 @@
         }`;
 
         const encodedQuery = encodeURIComponent(groq);
-        const endpoint = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
+        const endpoint = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${encodedQuery}`;
 
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, { cache: 'no-store' });
         if (!response.ok) {
             throw new Error(`Sanity API error: ${response.status} ${response.statusText}`);
         }
@@ -370,13 +365,6 @@
         const loadingEl = document.getElementById('productLoadingState');
         const contentEl = document.getElementById('productContentState');
         const errorEl = document.getElementById('productErrorState');
-
-        if (!slug) {
-            if (loadingEl) loadingEl.style.display = 'none';
-            if (contentEl) contentEl.style.display = 'none';
-            if (errorEl) errorEl.style.display = 'block';
-            return;
-        }
 
         try {
             const product = await fetchSanityProduct(slug);

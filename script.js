@@ -58,9 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dynamically synchronize Sanity products into existing category grid layouts
     initCategorySanityProducts();
+
+    // Enable direct clicking on product cards across all category pages
+    initProductCardClickNavigation();
 });
 
-// Sync Sanity Products into Category Listing Grids without altering layout
+// Product card click navigation is handled per-card in initCategorySanityProducts
+function initProductCardClickNavigation() {
+    // Sanity-generated cards attach their own click handlers with the correct slug URL.
+    // This function is intentionally a no-op to avoid interfering with those handlers.
+}
+
+// Sync Sanity Products into Category Listing Grids - Pure Sanity Source of Truth
 function initCategorySanityProducts() {
     const grid = document.querySelector('.ref-products-grid');
     if (!grid) return;
@@ -83,12 +92,15 @@ function initCategorySanityProducts() {
         'led-sensor-switches': 'led-sensor-switches',
     };
 
-    const currentCat = categoryMap[filename];
+    const currentCat = categoryMap[filename] || filename;
     if (!currentCat) return;
+
+    // Show simple loading text
+    grid.innerHTML = '<div class="category-loading" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888; letter-spacing: 0.05em;">Loading products...</div>';
 
     const SANITY_PROJECT_ID = '5nckxq6b';
     const SANITY_DATASET = 'production';
-    const groq = encodeURIComponent(`*[_type == "product" && (category == "${currentCat}" || category == "${filename}") && !(name match "*test*") && !(name match "*TEST*") && !(name match "*Sample*")]{
+    const groq = encodeURIComponent(`*[_type == "product" && !(_id in path("drafts.**")) && (category == "${currentCat}" || category == "${filename}")] | order(name asc){
         _id,
         name,
         model,
@@ -97,35 +109,31 @@ function initCategorySanityProducts() {
         category
     }`);
 
-    const endpoint = `https://${SANITY_PROJECT_ID}.apicdn.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}?query=${groq}`;
+    const endpoint = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}?query=${groq}`;
 
-    fetch(endpoint)
+    fetch(endpoint, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
-            if (!data.result || !data.result.length) return;
+            if (!data.result || !data.result.length) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888;">No products found in this category.</div>';
+                return;
+            }
 
-            // Existing product names in grid to prevent duplication
-            const existingNames = Array.from(grid.querySelectorAll('.ref-card .name'))
-                .map(el => el.textContent.trim().toLowerCase());
+            grid.innerHTML = '';
 
             data.result.forEach(prod => {
-                const prodName = prod.name || prod.model || 'Luminaire';
-                if (
-                    prodName.toLowerCase().includes('test') || 
-                    prodName.toLowerCase().includes('sample') ||
-                    (prod.slug && prod.slug.toLowerCase().includes('sample')) ||
-                    (prod.model && prod.model.toLowerCase().includes('test')) ||
-                    prod._id === '0be29e83-8e27-4eb0-abc2-722a6d48fe47' ||
-                    existingNames.includes(prodName.toLowerCase())
-                ) return;
+                if (!prod || !prod.slug || typeof prod.slug !== 'string' || !prod.slug.trim()) return;
 
-                const slug = prod.slug || prodName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                const prodName = (prod.name || prod.model || 'Luminaire').trim();
+                const prodModel = (prod.model || '').trim();
                 const imgUrl = prod.imageUrl || 'images/recessed/oliv.jpg';
-                const modelBadge = prod.model ? prod.model : 'VEROLITE';
+                const modelBadge = prodModel || 'VEROLITE';
+                const targetUrl = 'product.html?slug=' + encodeURIComponent(prod.slug);
 
-                const card = document.createElement('a');
-                card.href = `product.html?slug=${encodeURIComponent(slug)}`;
+                const card = document.createElement('div');
                 card.className = 'ref-card ref-card-visible';
+                card.style.cursor = 'pointer';
+                card.setAttribute('data-product-url', targetUrl);
                 card.innerHTML = `
                     <div class="ref-card-img-box">
                         <img src="${imgUrl}" alt="${prodName}" loading="lazy">
@@ -141,12 +149,15 @@ function initCategorySanityProducts() {
                         </div>
                     </div>
                 `;
+                card.addEventListener('click', function() {
+                    window.location.href = targetUrl;
+                });
                 grid.appendChild(card);
             });
         })
         .catch(err => {
-            // Silently maintain existing static layout if offline or error
-            console.debug('Sanity category sync skipped:', err);
+            console.error('Sanity category load error:', err);
+            grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888;">Unable to load products. Please try again later.</div>';
         });
 }
 
@@ -257,20 +268,7 @@ function initProductCardScrollAnimations() {
         cardObserver.observe(card);
     });
 
-    // Enable seamless click navigation to the reusable product template
-    document.querySelectorAll('.ref-card').forEach(card => {
-        if (card.tagName !== 'A' && !card.closest('a')) {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', (e) => {
-                if (e.target.closest('a') || e.target.tagName === 'A') return;
-                const nameEl = card.querySelector('.name');
-                if (nameEl && nameEl.textContent.trim()) {
-                    const slug = nameEl.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                    window.location.href = `product.html?slug=${encodeURIComponent(slug)}`;
-                }
-            });
-        }
-    });
+    // Sanity-generated cards handle their own clicks. No additional listeners needed here.
 }
 
 // ==========================================================================
