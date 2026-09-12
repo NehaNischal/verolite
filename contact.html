@@ -318,20 +318,38 @@
         @media (max-width: 900px) {
             .contact-container {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
             }
             .contact-navbar {
-                padding: 20px 24px;
+                padding: 16px 20px 14px;
+            }
+            .contact-hero-banner {
+                padding: 50px 20px 40px;
+            }
+            .contact-hero-title {
+                font-size: clamp(26px, 6.5vw, 36px);
+                letter-spacing: 1px;
+            }
+            .contact-hero-subtitle {
+                font-size: 13.5px;
             }
             .contact-section {
-                padding: 50px 20px 70px;
+                padding: 36px 16px 60px;
             }
             .contact-form-card,
             .contact-info-card {
-                padding: 32px 24px;
+                padding: 24px 18px;
             }
             .form-row {
                 grid-template-columns: 1fr;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px;
+            }
+            .submit-inquiry-btn {
+                width: 100%;
             }
         }
     </style>
@@ -343,11 +361,11 @@
             <img src="logo.png" alt="VEROLITE" class="logo-img">
         </a>
         <nav>
-            <a href="index.html">HOME</a>
-            <a href="about.html">ABOUT US</a>
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
             <div class="nav-dropdown">
                 <a href="index.html#collections" class="dropdown-toggle">
-                    PRODUCTS
+                    Products
                     <svg class="dropdown-arrow" width="9" height="6" viewBox="0 0 10 6" fill="currentColor">
                         <polygon points="0,0 10,0 5,6" />
                     </svg>
@@ -366,7 +384,7 @@
                     <a href="led-sensor-switches.html" class="dropdown-item">LED Sensor Switches</a>
                 </div>
             </div>
-            <a href="contact.html" class="active">CONTACT US</a>
+            <a href="contact.html" class="active">Contact Us</a>
         </nav>
     </header>
 
@@ -597,5 +615,6 @@
             }, 100);
         }
     </script>
+    <script src="script.js?v=live2"></script>
 </body>
 </html>

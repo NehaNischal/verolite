@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Enable direct clicking on product cards across all category pages
     initProductCardClickNavigation();
+
+    // Initialize Universal Mobile Navigation System
+    initMobileNavSystem();
 });
 
 // Product card click navigation is handled per-card in initCategorySanityProducts
@@ -847,3 +850,183 @@ function initRecessedMarqueePage() {
     renderMatrix();
     selectProduct(0, false);
 }
+
+// Universal Mobile Navigation Drawer & Toggle System
+function initMobileNavSystem() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    // Create or locate hamburger toggle button
+    let toggleBtn = navbar.querySelector('.mobile-nav-toggle');
+    if (!toggleBtn) {
+        toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-nav-toggle';
+        toggleBtn.setAttribute('aria-label', 'Toggle Navigation Menu');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.setAttribute('id', 'mobileNavToggle');
+        toggleBtn.innerHTML = '<span class="hamburger-line"></span><span class="hamburger-line"></span>';
+        navbar.appendChild(toggleBtn);
+    }
+
+    // Check if drawer already exists
+    let backdrop = document.getElementById('mobileDrawerBackdrop');
+    let drawer = document.getElementById('mobileNavDrawer');
+
+    if (!drawer) {
+        // Detect active link based on current pathname
+        const path = window.location.pathname.toLowerCase();
+        const isHome = path.endsWith('index.html') || path.endsWith('/') || path === '' || (!path.includes('about') && !path.includes('contact') && !path.includes('.html'));
+        const isAbout = path.includes('about.html');
+        const isContact = path.includes('contact.html');
+        const isProductPage = !isHome && !isAbout && !isContact;
+
+        backdrop = document.createElement('div');
+        backdrop.id = 'mobileDrawerBackdrop';
+        backdrop.className = 'mobile-drawer-backdrop';
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(backdrop);
+
+        drawer = document.createElement('aside');
+        drawer.id = 'mobileNavDrawer';
+        drawer.className = 'mobile-nav-drawer';
+        drawer.setAttribute('aria-label', 'Mobile Navigation');
+        drawer.setAttribute('aria-hidden', 'true');
+
+        drawer.innerHTML = `
+            <div class="mobile-drawer-header">
+                <a href="index.html" class="mobile-drawer-logo" aria-label="VEROLITE Home">
+                    <img src="logo.png" alt="VEROLITE" class="drawer-logo-img">
+                </a>
+                <button class="mobile-drawer-close-btn" id="mobileDrawerClose" aria-label="Close Navigation Menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-drawer-body">
+                <nav class="mobile-drawer-links">
+                    <a href="index.html" class="drawer-nav-item ${isHome ? 'active' : ''}">
+                        <span>HOME</span>
+                    </a>
+                    <a href="about.html" class="drawer-nav-item ${isAbout ? 'active' : ''}">
+                        <span>ABOUT US</span>
+                    </a>
+
+                    <div class="drawer-accordion ${isProductPage ? 'is-open' : ''}">
+                        <button class="drawer-accordion-btn ${isProductPage ? 'active' : ''}" id="mobileProductsToggle" aria-expanded="${isProductPage ? 'true' : 'false'}">
+                            <span>PRODUCTS</span>
+                            <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="drawer-accordion-content" id="mobileProductsMenu" style="${isProductPage ? 'max-height: 520px;' : ''}">
+                            <a href="recessed-led-down-lights.html" class="drawer-sub-item ${path.includes('recessed-led-down-lights') ? 'active-sub' : ''}">Recessed LED Down Lights</a>
+                            <a href="led-surface-down-lights.html" class="drawer-sub-item ${path.includes('led-surface-down-lights') ? 'active-sub' : ''}">LED Surface Down Lights</a>
+                            <a href="3phase-track-lights.html" class="drawer-sub-item ${path.includes('3phase-track-lights') ? 'active-sub' : ''}">3-Phase Track Lights</a>
+                            <a href="led-garden-lights.html" class="drawer-sub-item ${path.includes('led-garden-lights') ? 'active-sub' : ''}">LED Garden Lights</a>
+                            <a href="led-strip-lights.html" class="drawer-sub-item ${path.includes('led-strip-lights') ? 'active-sub' : ''}">LED Strip Lights</a>
+                            <a href="led-outdoor-flexible-neon-light.html" class="drawer-sub-item ${path.includes('led-outdoor-flexible-neon-light') ? 'active-sub' : ''}">LED Outdoor Flexible Neon Light</a>
+                            <a href="led-magnetic-track-lights.html" class="drawer-sub-item ${path.includes('led-magnetic-track-lights') ? 'active-sub' : ''}">LED Magnetic Track Lights</a>
+                            <a href="office-linear-lights.html" class="drawer-sub-item ${path.includes('office-linear-lights') ? 'active-sub' : ''}">Office Lights</a>
+                            <a href="led-strip-light-drivers.html" class="drawer-sub-item ${path.includes('led-strip-light-drivers') ? 'active-sub' : ''}">LED Strip Light Drivers</a>
+                            <a href="led-phase-cut-dimmer.html" class="drawer-sub-item ${path.includes('led-phase-cut-dimmer') ? 'active-sub' : ''}">LED Phase Cut Dimmer</a>
+                            <a href="led-sensor-switches.html" class="drawer-sub-item ${path.includes('led-sensor-switches') ? 'active-sub' : ''}">LED Sensor Switches</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="drawer-nav-item ${isContact ? 'active' : ''}">
+                        <span>CONTACT US</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="mobile-drawer-footer">
+                <div class="drawer-contact-tag">ARCHITECTURAL LIGHTING</div>
+                <a href="mailto:info@verolite.co.uk" class="drawer-footer-link">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>info@verolite.co.uk</span>
+                </a>
+                <a href="https://wa.me/?text=Hi%20Verolite%20Lighting%20Team" target="_blank" class="drawer-footer-whatsapp">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Chat on WhatsApp</span>
+                </a>
+                <div class="drawer-footer-location">London, United Kingdom</div>
+            </div>
+        `;
+        document.body.appendChild(drawer);
+    }
+
+    const closeBtn = document.getElementById('mobileDrawerClose');
+    const productsToggle = document.getElementById('mobileProductsToggle');
+    const productsMenu = document.getElementById('mobileProductsMenu');
+    const accordion = productsToggle ? productsToggle.closest('.drawer-accordion') : null;
+
+    function openDrawer() {
+        document.body.classList.add('mobile-menu-open');
+        toggleBtn.classList.add('is-active');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        if (drawer) drawer.setAttribute('aria-hidden', 'false');
+        if (backdrop) backdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeDrawer() {
+        document.body.classList.remove('mobile-menu-open');
+        toggleBtn.classList.remove('is-active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        if (drawer) drawer.setAttribute('aria-hidden', 'true');
+        if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    // Toggle menu
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (document.body.classList.contains('mobile-menu-open')) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeDrawer);
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', closeDrawer);
+    }
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('mobile-menu-open')) {
+            closeDrawer();
+        }
+    });
+
+    // Products accordion toggle
+    if (productsToggle && accordion && productsMenu) {
+        productsToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = accordion.classList.contains('is-open');
+            if (isOpen) {
+                accordion.classList.remove('is-open');
+                productsToggle.setAttribute('aria-expanded', 'false');
+                productsMenu.style.maxHeight = '0px';
+            } else {
+                accordion.classList.add('is-open');
+                productsToggle.setAttribute('aria-expanded', 'true');
+                productsMenu.style.maxHeight = (productsMenu.scrollHeight + 40) + 'px';
+            }
+        });
+    }
+
+    // Close on navigation link click (except accordion toggle)
+    drawer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            closeDrawer();
+        });
+    });
+}
+
