@@ -25,7 +25,7 @@ body::before, body::after {
 .recessed-hero-screen {
     min-height: 520px;
     height: 62vh;
-    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.65) 100%), url('images/recessed-hero-banner.jpg') center/cover no-repeat !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.65) 100%), url('images/recessed-hero-banner.jpg?v=v2') center/cover no-repeat !important;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -106,7 +106,7 @@ body::before, body::after {
 .driver-hero-screen {
     min-height: 540px;
     height: 68vh;
-    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/drivers/driver-hero-banner.jpg') center center / cover no-repeat #1a1a1a !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.5) 100%), url('images/drivers/driver-hero-banner.jpg?v=v2') center center / cover no-repeat #1a1a1a !important;
     display: flex;
     flex-direction: column;
     position: relative;
