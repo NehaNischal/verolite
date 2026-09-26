@@ -94,6 +94,7 @@
             "galleryUrls": gallery[].asset->url,
             features,
             specifications,
+            variantHeaders,
             variants[]{
                 model,
                 wattage,
@@ -309,20 +310,63 @@
 
         // 5. Product Variants Table (Lower Full-Width Section)
         const variantsSection = document.getElementById('productVariantsSection');
+        const variantsThead = document.getElementById('productVariantsHead');
         const variantsTbody = document.getElementById('productVariantsBody');
 
         if (variantsSection && variantsTbody) {
             if (product.variants && Array.isArray(product.variants) && product.variants.length > 0) {
-                const validVariants = product.variants.filter(v => v && (v.model || v.wattage || v.cct || v.size));
+                const validVariants = product.variants.filter(v => v && (v.model || v.wattage || v.cct || v.body || v.size || v.cutOut || v.pdfUrl));
                 if (validVariants.length > 0) {
-                    variantsTbody.innerHTML = validVariants.map(v => `
-                        <tr>
-                            <td><strong>${v.model || '—'}</strong></td>
-                            <td>${v.wattage || '—'}</td>
-                            <td>${v.cct || '—'}</td>
-                            <td>${v.body || '—'}</td>
-                            <td>${v.size || '—'}</td>
-                            <td>${v.cutOut || '—'}</td>
+                    const defaultCols = [
+                        { key: 'model', label: 'Model', colKey: 'col1' },
+                        { key: 'wattage', label: 'Wattage', colKey: 'col2' },
+                        { key: 'cct', label: 'CCT', colKey: 'col3' },
+                        { key: 'body', label: 'Body', colKey: 'col4' },
+                        { key: 'size', label: 'Size', colKey: 'col5' },
+                        { key: 'cutOut', label: 'Cut-Out', colKey: 'col6' }
+                    ];
+
+                    const vh = product.variantHeaders || {};
+                    const hasCustomHeaders = Object.keys(vh).length > 0;
+
+                    // Determine active columns based on custom variantHeaders or default data presence
+                    const activeCols = defaultCols.map(col => {
+                        if (hasCustomHeaders && vh[col.colKey] !== undefined) {
+                            const customLabel = (vh[col.colKey] || '').trim();
+                            if (!customLabel || customLabel === '-') {
+                                return null; // Hidden column
+                            }
+                            return { key: col.key, label: customLabel };
+                        }
+
+                        // If no custom headers set, show default if any variant has a value, or keep Model/Wattage
+                        const hasAnyData = validVariants.some(v => v[col.key] && String(v[col.key]).trim() !== '');
+                        if (hasAnyData || col.key === 'model' || col.key === 'wattage') {
+                            return { key: col.key, label: col.label };
+                        }
+                        return null;
+                    }).filter(Boolean);
+
+                    const hasAnyPdf = validVariants.some(v => v.pdfUrl);
+
+                    // Render dynamic <thead> headers
+                    if (variantsThead) {
+                        const headerHtml = activeCols.map(c => `<th>${c.label}</th>`).join('') +
+                            (hasAnyPdf ? '<th>Datasheet</th>' : '');
+                        variantsThead.innerHTML = `<tr>${headerHtml}</tr>`;
+                    }
+
+                    // Render dynamic <tbody> rows
+                    variantsTbody.innerHTML = validVariants.map(v => {
+                        const cellsHtml = activeCols.map(c => {
+                            const val = v[c.key] ? String(v[c.key]).trim() : '';
+                            if (c.key === 'model') {
+                                return `<td><strong>${val || '—'}</strong></td>`;
+                            }
+                            return `<td>${val || '—'}</td>`;
+                        }).join('');
+
+                        const pdfCell = hasAnyPdf ? `
                             <td>
                                 ${v.pdfUrl ? `
                                     <a href="${v.pdfUrl}" target="_blank" class="variant-pdf-btn">
@@ -331,8 +375,11 @@
                                     </a>
                                 ` : '—'}
                             </td>
-                        </tr>
-                    `).join('');
+                        ` : '';
+
+                        return `<tr>${cellsHtml}${pdfCell}</tr>`;
+                    }).join('');
+
                     variantsSection.style.display = 'flex';
                 } else {
                     variantsSection.style.display = 'none';
