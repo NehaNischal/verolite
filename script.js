@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enable direct clicking on product cards across all category pages
     initProductCardClickNavigation();
 
+    // Initialize Products Cascading Mega Menu Dropdown
+    initProductsCascadingDropdown();
+
     // Initialize Universal Mobile Navigation System
     initMobileNavSystem();
 });
@@ -880,6 +883,18 @@ function initMobileNavSystem() {
         const isContact = path.includes('contact.html');
         const isProductPage = !isHome && !isAbout && !isContact;
 
+        const isIndoorActive = path.includes('recessed-led-down-lights') ||
+                               path.includes('led-surface-down-lights') ||
+                               path.includes('3phase-track-lights') ||
+                               path.includes('office-linear-lights') ||
+                               path.includes('led-strip-lights') ||
+                               path.includes('led-magnetic-track-lights');
+        const isOutdoorActive = path.includes('led-garden-lights') ||
+                                path.includes('led-outdoor-flexible-neon-light');
+        const isDriversActive = path.includes('led-strip-light-drivers') ||
+                                path.includes('led-phase-cut-dimmer') ||
+                                path.includes('led-sensor-switches');
+
         backdrop = document.createElement('div');
         backdrop.id = 'mobileDrawerBackdrop';
         backdrop.className = 'mobile-drawer-backdrop';
@@ -921,18 +936,53 @@ function initMobileNavSystem() {
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </button>
-                        <div class="drawer-accordion-content" id="mobileProductsMenu" style="${isProductPage ? 'max-height: 520px;' : ''}">
-                            <a href="recessed-led-down-lights.html" class="drawer-sub-item ${path.includes('recessed-led-down-lights') ? 'active-sub' : ''}">Recessed LED Down Lights</a>
-                            <a href="led-surface-down-lights.html" class="drawer-sub-item ${path.includes('led-surface-down-lights') ? 'active-sub' : ''}">LED Surface Down Lights</a>
-                            <a href="3phase-track-lights.html" class="drawer-sub-item ${path.includes('3phase-track-lights') ? 'active-sub' : ''}">3-Phase Track Lights</a>
-                            <a href="led-garden-lights.html" class="drawer-sub-item ${path.includes('led-garden-lights') ? 'active-sub' : ''}">LED Garden Lights</a>
-                            <a href="led-strip-lights.html" class="drawer-sub-item ${path.includes('led-strip-lights') ? 'active-sub' : ''}">LED Strip Lights</a>
-                            <a href="led-outdoor-flexible-neon-light.html" class="drawer-sub-item ${path.includes('led-outdoor-flexible-neon-light') ? 'active-sub' : ''}">LED Outdoor Flexible Neon Light</a>
-                            <a href="led-magnetic-track-lights.html" class="drawer-sub-item ${path.includes('led-magnetic-track-lights') ? 'active-sub' : ''}">LED Magnetic Track Lights</a>
-                            <a href="office-linear-lights.html" class="drawer-sub-item ${path.includes('office-linear-lights') ? 'active-sub' : ''}">Office Lights</a>
-                            <a href="led-strip-light-drivers.html" class="drawer-sub-item ${path.includes('led-strip-light-drivers') ? 'active-sub' : ''}">LED Strip Light Drivers</a>
-                            <a href="led-phase-cut-dimmer.html" class="drawer-sub-item ${path.includes('led-phase-cut-dimmer') ? 'active-sub' : ''}">LED Phase Cut Dimmer</a>
-                            <a href="led-sensor-switches.html" class="drawer-sub-item ${path.includes('led-sensor-switches') ? 'active-sub' : ''}">LED Sensor Switches</a>
+                        <div class="drawer-accordion-content" id="mobileProductsMenu" style="${isProductPage ? 'max-height: 1200px;' : ''}">
+                            <!-- Primary Category 1: Indoor Lights -->
+                            <div class="drawer-cat-group">
+                                <button type="button" class="drawer-cat-toggle ${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'is-open' : ''}" aria-expanded="${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'true' : 'false'}">
+                                    <span>Indoor Lights</span>
+                                    <svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="drawer-cat-items" style="${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'max-height: 400px;' : ''}">
+                                    <a href="recessed-led-down-lights.html" class="drawer-sub-item ${path.includes('recessed-led-down-lights') ? 'active-sub' : ''}">Recessed LED Down Lights</a>
+                                    <a href="led-surface-down-lights.html" class="drawer-sub-item ${path.includes('led-surface-down-lights') ? 'active-sub' : ''}">LED Surface Down Lights</a>
+                                    <a href="3phase-track-lights.html" class="drawer-sub-item ${path.includes('3phase-track-lights') ? 'active-sub' : ''}">3-Phase Track Lights</a>
+                                    <a href="office-linear-lights.html" class="drawer-sub-item ${path.includes('office-linear-lights') ? 'active-sub' : ''}">Office Lights</a>
+                                    <a href="led-strip-lights.html" class="drawer-sub-item ${path.includes('led-strip-lights') ? 'active-sub' : ''}">LED Strip Lights</a>
+                                    <a href="led-magnetic-track-lights.html" class="drawer-sub-item ${path.includes('led-magnetic-track-lights') ? 'active-sub' : ''}">LED Magnetic Track Lights</a>
+                                </div>
+                            </div>
+
+                            <!-- Primary Category 2: Outdoor Lights -->
+                            <div class="drawer-cat-group">
+                                <button type="button" class="drawer-cat-toggle ${isOutdoorActive ? 'is-open' : ''}" aria-expanded="${isOutdoorActive ? 'true' : 'false'}">
+                                    <span>Outdoor Lights</span>
+                                    <svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="drawer-cat-items" style="${isOutdoorActive ? 'max-height: 200px;' : ''}">
+                                    <a href="led-garden-lights.html" class="drawer-sub-item ${path.includes('led-garden-lights') ? 'active-sub' : ''}">LED Garden Lights</a>
+                                    <a href="led-outdoor-flexible-neon-light.html" class="drawer-sub-item ${path.includes('led-outdoor-flexible-neon-light') ? 'active-sub' : ''}">LED Outdoor Flexible Neon Light</a>
+                                </div>
+                            </div>
+
+                            <!-- Primary Category 3: Drivers & Controllers -->
+                            <div class="drawer-cat-group">
+                                <button type="button" class="drawer-cat-toggle ${isDriversActive ? 'is-open' : ''}" aria-expanded="${isDriversActive ? 'true' : 'false'}">
+                                    <span>Drivers &amp; Controllers</span>
+                                    <svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="drawer-cat-items" style="${isDriversActive ? 'max-height: 250px;' : ''}">
+                                    <a href="led-strip-light-drivers.html" class="drawer-sub-item ${path.includes('led-strip-light-drivers') ? 'active-sub' : ''}">LED Strip Light Drivers</a>
+                                    <a href="led-phase-cut-dimmer.html" class="drawer-sub-item ${path.includes('led-phase-cut-dimmer') ? 'active-sub' : ''}">LED Phase Cut Dimmer</a>
+                                    <a href="led-sensor-switches.html" class="drawer-sub-item ${path.includes('led-sensor-switches') ? 'active-sub' : ''}">LED Sensor Switches</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1017,8 +1067,31 @@ function initMobileNavSystem() {
             } else {
                 accordion.classList.add('is-open');
                 productsToggle.setAttribute('aria-expanded', 'true');
-                productsMenu.style.maxHeight = (productsMenu.scrollHeight + 40) + 'px';
+                productsMenu.style.maxHeight = '1500px';
             }
+        });
+
+        // Nested primary category group accordions
+        drawer.querySelectorAll('.drawer-cat-toggle').forEach(catToggle => {
+            catToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const group = catToggle.closest('.drawer-cat-group');
+                const items = group ? group.querySelector('.drawer-cat-items') : null;
+                if (!items) return;
+
+                const isCatOpen = catToggle.classList.contains('is-open');
+                if (isCatOpen) {
+                    catToggle.classList.remove('is-open');
+                    catToggle.setAttribute('aria-expanded', 'false');
+                    items.style.maxHeight = '0px';
+                } else {
+                    catToggle.classList.add('is-open');
+                    catToggle.setAttribute('aria-expanded', 'true');
+                    items.style.maxHeight = (items.scrollHeight + 30) + 'px';
+                }
+                productsMenu.style.maxHeight = '1500px';
+            });
         });
     }
 
@@ -1027,6 +1100,232 @@ function initMobileNavSystem() {
         link.addEventListener('click', () => {
             closeDrawer();
         });
+    });
+}
+
+// ==========================================================================
+// Cascading Mega Menu Products Dropdown System
+// ==========================================================================
+function initProductsCascadingDropdown() {
+    const navDropdowns = document.querySelectorAll('.nav-dropdown');
+    if (!navDropdowns.length) return;
+
+    const path = window.location.pathname.toLowerCase();
+    const filename = path.split('/').pop().replace('.html', '') || '';
+
+    // Category mapping to identify active primary category based on current page
+    const categoryToGroup = {
+        'recessed-led-down-lights': 'indoor',
+        'led-surface-down-lights': 'indoor',
+        '3phase-track-lights': 'indoor',
+        'office-linear-lights': 'indoor',
+        'led-strip-lights': 'indoor',
+        'led-magnetic-track-lights': 'indoor',
+        'led-garden-lights': 'outdoor',
+        'led-outdoor-flexible-neon-light': 'outdoor',
+        'led-strip-light-drivers': 'drivers',
+        'led-phase-cut-dimmer': 'drivers',
+        'led-sensor-switches': 'drivers'
+    };
+
+    const initialActiveGroup = categoryToGroup[filename] || 'indoor';
+
+    navDropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.mega-menu') || dropdown.querySelector('.dropdown-menu');
+        if (!menu) return;
+
+        const primaryButtons = Array.from(dropdown.querySelectorAll('.primary-cat-item'));
+        const subpanels = Array.from(dropdown.querySelectorAll('.mega-subpanel'));
+        const dropdownItems = Array.from(dropdown.querySelectorAll('.dropdown-item'));
+
+        // Highlight current page dropdown item if active
+        dropdownItems.forEach(item => {
+            const href = item.getAttribute('href') || '';
+            const itemFile = href.split('/').pop().replace('.html', '');
+            if (itemFile && itemFile === filename) {
+                item.classList.add('is-current-page');
+            }
+        });
+
+        // Function to switch active primary category and panel
+        function setActiveCategory(catKey, shouldFocus = false) {
+            primaryButtons.forEach(btn => {
+                const isTarget = btn.getAttribute('data-category') === catKey;
+                btn.classList.toggle('is-active', isTarget);
+                btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+                btn.setAttribute('tabindex', isTarget ? '0' : '-1');
+                if (isTarget && shouldFocus) {
+                    btn.focus();
+                }
+            });
+
+            subpanels.forEach(panel => {
+                const isTarget = panel.getAttribute('data-panel') === catKey;
+                panel.classList.toggle('is-active', isTarget);
+            });
+        }
+
+        // Set initial active state based on page
+        setActiveCategory(initialActiveGroup);
+
+        // Hover events for primary categories - instant, smooth, no flicker
+        primaryButtons.forEach(btn => {
+            const cat = btn.getAttribute('data-category');
+
+            btn.addEventListener('mouseenter', () => {
+                setActiveCategory(cat);
+            });
+
+            btn.addEventListener('focus', () => {
+                setActiveCategory(cat);
+            });
+
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setActiveCategory(cat, true);
+            });
+        });
+
+        // Open/Close dropdown helpers
+        function openDropdown() {
+            dropdown.classList.add('is-open');
+            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeDropdown() {
+            dropdown.classList.remove('is-open');
+            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            setActiveCategory(initialActiveGroup);
+        }
+
+        // Desktop hover behavior with smooth intent buffer (prevents flickering)
+        let closeTimer = null;
+        dropdown.addEventListener('mouseenter', () => {
+            if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+            }
+            openDropdown();
+        });
+
+        dropdown.addEventListener('mouseleave', () => {
+            closeTimer = setTimeout(() => {
+                closeDropdown();
+            }, 120);
+        });
+
+        // Toggle click (for touch devices or mobile/tablet)
+        if (toggle) {
+            toggle.addEventListener('click', (e) => {
+                if (window.innerWidth > 768) {
+                    const isOpen = dropdown.classList.contains('is-open');
+                    if (!isOpen) {
+                        e.preventDefault();
+                        openDropdown();
+                        const activeBtn = dropdown.querySelector('.primary-cat-item.is-active');
+                        if (activeBtn) activeBtn.focus();
+                    }
+                }
+            });
+
+            // Keyboard navigation on toggle
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openDropdown();
+                    const activeBtn = dropdown.querySelector('.primary-cat-item.is-active') || primaryButtons[0];
+                    if (activeBtn) activeBtn.focus();
+                } else if (e.key === 'Escape') {
+                    closeDropdown();
+                }
+            });
+        }
+
+        // Keyboard navigation inside primary category column
+        primaryButtons.forEach((btn, index) => {
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextIndex = (index + 1) % primaryButtons.length;
+                    const nextBtn = primaryButtons[nextIndex];
+                    const cat = nextBtn.getAttribute('data-category');
+                    setActiveCategory(cat, true);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevIndex = (index - 1 + primaryButtons.length) % primaryButtons.length;
+                    const prevBtn = primaryButtons[prevIndex];
+                    const cat = prevBtn.getAttribute('data-category');
+                    setActiveCategory(cat, true);
+                } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    e.preventDefault();
+                    const activePanel = dropdown.querySelector('.mega-subpanel.is-active');
+                    if (activePanel) {
+                        const firstLink = activePanel.querySelector('.dropdown-item');
+                        if (firstLink) firstLink.focus();
+                    }
+                } else if (e.key === 'Escape') {
+                    closeDropdown();
+                    if (toggle) toggle.focus();
+                }
+            });
+        });
+
+        // Keyboard navigation inside subpanel links
+        subpanels.forEach(panel => {
+            const links = Array.from(panel.querySelectorAll('.dropdown-item'));
+            links.forEach((link, linkIndex) => {
+                link.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextLink = links[linkIndex + 1];
+                        if (nextLink) nextLink.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (linkIndex > 0) {
+                            links[linkIndex - 1].focus();
+                        } else {
+                            const activeBtn = dropdown.querySelector('.primary-cat-item.is-active');
+                            if (activeBtn) activeBtn.focus();
+                        }
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const activeBtn = dropdown.querySelector('.primary-cat-item.is-active');
+                        if (activeBtn) activeBtn.focus();
+                    } else if (e.key === 'Escape') {
+                        closeDropdown();
+                        if (toggle) toggle.focus();
+                    }
+                });
+            });
+        });
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        navDropdowns.forEach(dropdown => {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('is-open');
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            navDropdowns.forEach(dropdown => {
+                if (dropdown.classList.contains('is-open') || dropdown.contains(document.activeElement)) {
+                    dropdown.classList.remove('is-open');
+                    const toggle = dropdown.querySelector('.dropdown-toggle');
+                    if (toggle) {
+                        toggle.setAttribute('aria-expanded', 'false');
+                        toggle.focus();
+                    }
+                }
+            });
+        }
     });
 }
 
