@@ -1,0 +1,22 @@
+# robots.txt for https://verolite.co.uk
+User-agent: *
+Allow: /
+
+# Disallow private and administrative paths
+Disallow: /studio/
+Disallow: /studio/*
+Disallow: /scratch/
+Disallow: /scratch/*
+Disallow: /catalog_sheets/
+Disallow: /catalog_sheets/*
+Disallow: /*.zip$
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Host directive
+Host: https://verolite.co.uk
+
+# XML Sitemap
+Sitemap: https://verolite.co.uk/sitemap.xml
+

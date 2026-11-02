@@ -51,6 +51,7 @@ export const product = defineType({
                     { title: 'LED Strip Light Drivers', value: 'led-strip-light-drivers' },
                     { title: 'LED Phase Cut Dimmer', value: 'led-phase-cut-dimmer' },
                     { title: 'LED Sensor Switches', value: 'led-sensor-switches' },
+                    { title: 'Emergency Lights', value: 'emergency-lights' },
                 ],
                 layout: 'dropdown',
             },
@@ -285,6 +286,49 @@ export const product = defineType({
             name: 'datasheet',
             title: 'Product Datasheet / PDF',
             type: 'file',
+        }),
+
+        // Search Engine Optimization (SEO) & Social Sharing Metadata
+        defineField({
+            name: 'seoTitle',
+            title: 'SEO Title (Page Title)',
+            type: 'string',
+            description: 'Custom browser page title (recommended: 50-60 characters). If left blank, automatically falls back to: "[Product Name] ([Model]) | VEROLITE Architectural Lighting".',
+            validation: (Rule) => Rule.max(70).warning('Titles longer than 60-70 characters may be truncated in search results.'),
+        }),
+
+        defineField({
+            name: 'seoDescription',
+            title: 'SEO Meta Description',
+            type: 'text',
+            rows: 3,
+            description: 'Summary shown in search engine snippet cards (recommended: 140-160 characters). If left blank, automatically falls back to the luminaire\'s Short Description.',
+            validation: (Rule) => Rule.max(180).warning('Descriptions longer than 160 characters may be truncated in Google search snippets.'),
+        }),
+
+        defineField({
+            name: 'canonicalUrl',
+            title: 'Custom Canonical URL',
+            type: 'url',
+            description: 'Optional custom canonical URL override if this product has an alternate master page. If left blank, automatically defaults to: "https://verolite.co.uk/product.html?slug=[slug]".',
+        }),
+
+        defineField({
+            name: 'seoImage',
+            title: 'Custom Social Share Image (Open Graph / Twitter)',
+            type: 'image',
+            description: 'Optional social share preview image (1200x630px recommended). If left blank, automatically falls back to Main Product Image.',
+            options: {
+                hotspot: true,
+            },
+        }),
+
+        defineField({
+            name: 'noIndex',
+            title: 'Exclude from Search Engines (noindex)',
+            type: 'boolean',
+            description: 'Toggle on only if you want search engines to NOT index this product page.',
+            initialValue: false,
         }),
     ],
 

@@ -23,6 +23,7 @@
         'led-strip-light-drivers': { title: 'LED Strip Light Drivers', page: 'led-strip-light-drivers.html' },
         'led-phase-cut-dimmer': { title: 'LED Phase Cut Dimmer', page: 'led-phase-cut-dimmer.html' },
         'led-sensor-switches': { title: 'LED Sensor Switches', page: 'led-sensor-switches.html' },
+        'emergency-lights': { title: 'Emergency Lights', page: 'emergency-lights.html' },
     };
 
     function getCategoryInfo(rawCat) {
@@ -105,7 +106,13 @@
                 "pdfUrl": pdf.asset->url
             },
             datasheet,
-            "datasheetUrl": datasheet.asset->url
+            "datasheetUrl": datasheet.asset->url,
+            seoTitle,
+            seoDescription,
+            seoImage,
+            "seoImageUrl": seoImage.asset->url,
+            canonicalUrl,
+            noIndex
         }`;
 
         const encodedQuery = encodeURIComponent(groq);
@@ -127,26 +134,199 @@
         const errorEl = document.getElementById('productErrorState');
 
         if (!product) {
+            document.title = 'Product Not Found | VEROLITE Architectural Lighting';
+            let metaRobots = document.querySelector('meta[name="robots"]');
+            if (!metaRobots) {
+                metaRobots = document.createElement('meta');
+                metaRobots.name = 'robots';
+                document.head.appendChild(metaRobots);
+            }
+            metaRobots.setAttribute('content', 'noindex, follow');
+
+            let schemaScript = document.getElementById('productSchemaJsonLd');
+            if (schemaScript) schemaScript.remove();
+
             if (loadingEl) loadingEl.style.display = 'none';
             if (contentEl) contentEl.style.display = 'none';
             if (errorEl) errorEl.style.display = 'block';
             return;
         }
 
-        // 1. Titles & Metadata
+        // 1. Titles & Metadata with sensible fallbacks
         const productName = (product.name || '').trim();
         const productModel = (product.model || '').trim();
         const catInfo = getCategoryInfo(product.category);
         const categoryName = catInfo.title;
-        const displayTitle = productModel ? `${productName} (${productModel})` : productName;
+        const defaultTitle = (productModel && productModel !== '-' && productModel !== productName)
+            ? `${productName} (${productModel}) | VEROLITE Architectural Lighting`
+            : `${productName} | VEROLITE Architectural Lighting`;
+        const seoPageTitle = (product.seoTitle && product.seoTitle.trim())
+            ? product.seoTitle.trim()
+            : defaultTitle;
 
-        document.title = `${displayTitle} | VEROLITE Architectural Lighting`;
+        document.title = seoPageTitle;
 
-        // Update Meta Description for SEO
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc && product.shortDescription) {
-            metaDesc.setAttribute('content', product.shortDescription);
+        // Meta Description Fallback
+        const defaultMetaDesc = (product.shortDescription && product.shortDescription.trim())
+            ? product.shortDescription.trim()
+            : (product.description && product.description.trim())
+                ? product.description.trim().substring(0, 155) + '...'
+                : `Discover the ${productName} luminaire by VEROLITE. Precision architectural LED lighting with exceptional optical design and engineering excellence.`;
+        const seoMetaDescription = (product.seoDescription && product.seoDescription.trim())
+            ? product.seoDescription.trim()
+            : defaultMetaDesc;
+
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.name = 'description';
+            document.head.appendChild(metaDesc);
         }
+        metaDesc.setAttribute('content', seoMetaDescription);
+
+        // Canonical URL Fallback
+        const currentSlug = (product.slug && product.slug.current) ? product.slug.current : getProductSlug();
+        const defaultCanonical = `https://verolite.co.uk/product.html?slug=${encodeURIComponent(currentSlug || '')}`;
+        const canonicalHref = (product.canonicalUrl && product.canonicalUrl.trim())
+            ? product.canonicalUrl.trim()
+            : defaultCanonical;
+
+        let canonicalLink = document.querySelector('link[rel="canonical"]');
+        if (!canonicalLink) {
+            canonicalLink = document.createElement('link');
+            canonicalLink.rel = 'canonical';
+            document.head.appendChild(canonicalLink);
+        }
+        canonicalLink.href = canonicalHref;
+
+        // Robots Directive (noindex if flagged in Sanity)
+        let robotsMeta = document.querySelector('meta[name="robots"]');
+        if (!robotsMeta) {
+            robotsMeta = document.createElement('meta');
+            robotsMeta.name = 'robots';
+            document.head.appendChild(robotsMeta);
+        }
+        robotsMeta.setAttribute('content', product.noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large');
+
+        // Main Image URL resolution for Social & Schema
+        const resolvedMainImgUrl = product.seoImageUrl || product.mainImageUrl || buildImageUrl(product.seoImage) || buildImageUrl(product.mainImage) || 'https://verolite.co.uk/images/recessed-hero-banner.jpg';
+
+        // Helper to update or create meta tags
+        function setMetaTag(selector, attr, attrVal, content) {
+            let el = document.querySelector(selector);
+            if (!el) {
+                el = document.createElement('meta');
+                el.setAttribute(attr, attrVal);
+                document.head.appendChild(el);
+            }
+            el.setAttribute('content', content);
+        }
+
+        // Open Graph & Social Sharing Metadata
+        setMetaTag('meta[property="og:title"]', 'property', 'og:title', seoPageTitle);
+        setMetaTag('meta[property="og:description"]', 'property', 'og:description', seoMetaDescription);
+        setMetaTag('meta[property="og:url"]', 'property', 'og:url', canonicalHref);
+        setMetaTag('meta[property="og:image"]', 'property', 'og:image', resolvedMainImgUrl);
+        setMetaTag('meta[property="og:type"]', 'property', 'og:type', 'product');
+        setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', 'VEROLITE');
+
+        // Twitter Card Metadata
+        setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+        setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', seoPageTitle);
+        setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', seoMetaDescription);
+        setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', resolvedMainImgUrl);
+
+        // Structured Data: Schema.org Product & BreadcrumbList (JSON-LD)
+        let schemaScript = document.getElementById('productSchemaJsonLd');
+        if (!schemaScript) {
+            schemaScript = document.createElement('script');
+            schemaScript.id = 'productSchemaJsonLd';
+            schemaScript.type = 'application/ld+json';
+            document.head.appendChild(schemaScript);
+        }
+
+        const validVariants = (product.variants && Array.isArray(product.variants))
+            ? product.variants.filter(v => v && (v.model || v.wattage || v.cct || v.body || v.size || v.cutOut))
+            : [];
+        const validSpecs = (product.specifications && Array.isArray(product.specifications))
+            ? product.specifications.filter(s => s && s.label)
+            : [];
+
+        const schemaProductObj = {
+            "@type": "Product",
+            "@id": canonicalHref + "#product",
+            "name": productName,
+            "url": canonicalHref,
+            "image": resolvedMainImgUrl ? [resolvedMainImgUrl] : [],
+            "description": seoMetaDescription,
+            "sku": (productModel && productModel !== '-') ? productModel : (currentSlug || productName),
+            "mpn": (productModel && productModel !== '-') ? productModel : (currentSlug || productName),
+            "brand": {
+                "@type": "Brand",
+                "name": "VEROLITE"
+            },
+            "manufacturer": {
+                "@type": "Organization",
+                "name": "VEROLITE",
+                "url": "https://verolite.co.uk/"
+            },
+            "category": categoryName
+        };
+
+        if (validSpecs.length > 0) {
+            schemaProductObj.additionalProperty = validSpecs.map(s => ({
+                "@type": "PropertyValue",
+                "name": s.label,
+                "value": s.value || ""
+            }));
+        }
+
+        if (validVariants.length > 0) {
+            schemaProductObj.hasVariant = validVariants.map(v => ({
+                "@type": "Product",
+                "name": `${productName} ${v.model || ''}`.trim(),
+                "sku": v.model || undefined,
+                "description": [v.wattage, v.cct, v.body, v.size, v.cutOut].filter(Boolean).join(' | ') || undefined
+            }));
+        }
+
+        const productJsonLd = {
+            "@context": "https://schema.org",
+            "@graph": [
+                schemaProductObj,
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": canonicalHref + "#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://verolite.co.uk/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "Collections",
+                            "item": "https://verolite.co.uk/#collections"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": categoryName,
+                            "item": "https://verolite.co.uk/" + catInfo.page
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 4,
+                            "name": productName,
+                            "item": canonicalHref
+                        }
+                    ]
+                }
+            ]
+        };
+        schemaScript.textContent = JSON.stringify(productJsonLd);
 
         // Breadcrumbs
         const breadcrumbCat = document.getElementById('breadcrumbCategory');
@@ -406,6 +586,48 @@
         if (contentEl) contentEl.style.display = 'block';
     }
 
+    const FALLBACK_EMERGENCY_PRODUCT = {
+        name: 'Emergency Exit Sign',
+        model: 'VER-EMG-01',
+        slug: { current: 'emergency-exit-sign' },
+        category: 'emergency-lights',
+        shortDescription: 'Architectural LED emergency exit sign with long-life LiFePO4 battery backup, crisp laser-etched green pictogram panels, and ISO 7010 compliance.',
+        description: 'Engineered specifically for safety-critical architectural and commercial environments, the VEROLITE Emergency Exit Sign delivers instant, dependable illumination during emergency power failures. Constructed with a precision anodised aluminium housing and crystal-clear high-efficiency optical acrylic diffuser, it ensures maximum visibility and legibility up to 24 metres. Fully certified to BS EN 60598-2-22, BS 5266-1, and ISO 7010 international standards.',
+        mainImageUrl: 'images/emergency-hero-banner.jpg',
+        features: [
+            'Ultra-reliable high-efficiency LED light source with 50,000+ hour operational lifespan',
+            'Maintained and non-maintained operation modes selectable via onboard DIP switch',
+            'Integrated 3-hour emergency battery backup with self-testing diagnostics',
+            'Surface wall, ceiling, or semi-recessed mounting options included',
+            'ISO 7010 and BS EN 1838 compliant optical pictogram panel (Running Man with Arrow)',
+            'Robust IP42 rated aluminium architectural body with anti-corrosion finish'
+        ],
+        specifications: [
+            { label: 'Type', value: 'Architectural LED Emergency Exit Luminaire' },
+            { label: 'Emergency Duration', value: '3 Hours' },
+            { label: 'Mode of Operation', value: 'Maintained / Non-Maintained Selectable' },
+            { label: 'Input Voltage', value: 'AC 220-240V, 50/60Hz' },
+            { label: 'Battery Type', value: 'LiFePO4 3.2V 1500mAh High Temperature' },
+            { label: 'Viewing Distance', value: '24 Metres (ISO 7010)' },
+            { label: 'Housing Material', value: 'Anodised Aluminium + Optical Grade Acrylic' },
+            { label: 'IP Rating', value: 'IP42' },
+            { label: 'Compliance Standards', value: 'BS EN 60598-2-22, BS 5266-1, ISO 7010' }
+        ],
+        variantHeaders: {
+            col1: 'Model',
+            col2: 'Wattage',
+            col3: 'Direction',
+            col4: 'Finish',
+            col5: 'Mounting',
+            col6: 'Emergency Duration'
+        },
+        variants: [
+            { model: 'VER-EMG-01-D', wattage: '3W', cct: 'Arrow Down (Exit)', body: 'Silver Anodised Aluminium', size: 'Wall / Ceiling Surface', cutOut: '3 Hours LiFePO4' },
+            { model: 'VER-EMG-01-L', wattage: '3W', cct: 'Arrow Left', body: 'Silver Anodised Aluminium', size: 'Wall / Ceiling Surface', cutOut: '3 Hours LiFePO4' },
+            { model: 'VER-EMG-01-R', wattage: '3W', cct: 'Arrow Right', body: 'Silver Anodised Aluminium', size: 'Wall / Ceiling Surface', cutOut: '3 Hours LiFePO4' }
+        ]
+    };
+
     // Initialize on DOM ready
     async function initProductPage() {
         const slug = getProductSlug();
@@ -413,14 +635,24 @@
         const contentEl = document.getElementById('productContentState');
         const errorEl = document.getElementById('productErrorState');
 
+        if (!slug) {
+            renderProduct(null);
+            return;
+        }
+
         try {
-            const product = await fetchSanityProduct(slug);
+            let product = await fetchSanityProduct(slug);
+            if (!product && (slug === 'emergency-exit-sign' || slug === 'emergency-lights')) {
+                product = FALLBACK_EMERGENCY_PRODUCT;
+            }
             renderProduct(product);
         } catch (err) {
             console.error('Error fetching product from Sanity:', err);
-            if (loadingEl) loadingEl.style.display = 'none';
-            if (contentEl) contentEl.style.display = 'none';
-            if (errorEl) errorEl.style.display = 'block';
+            if (slug === 'emergency-exit-sign' || slug === 'emergency-lights') {
+                renderProduct(FALLBACK_EMERGENCY_PRODUCT);
+            } else {
+                renderProduct(null);
+            }
         }
     }
 

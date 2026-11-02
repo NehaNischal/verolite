@@ -143,6 +143,16 @@ body::before, body::after {
     width: 100%;
 }
 
+.emergency-hero-screen {
+    min-height: 540px;
+    height: 68vh;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%), url('images/emergency-hero-banner.jpg') center center / cover no-repeat #111111 !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
 .recessed-hero-content {
     flex: 1;
     display: flex;
@@ -304,7 +314,9 @@ body::before, body::after {
 }
 
 .ref-card-title {
+    margin: 0;
     font-size: 12.5px;
+    font-weight: normal;
     letter-spacing: 0.4px;
     text-transform: uppercase;
     display: flex;

@@ -75,6 +75,27 @@ function initProductCardClickNavigation() {
     // This function is intentionally a no-op to avoid interfering with those handlers.
 }
 
+function renderEmergencyFallbackCard(grid) {
+    if (!grid) return;
+    grid.innerHTML = `
+        <a class="ref-card ref-card-visible" href="product.html?slug=emergency-exit-sign" aria-label="Emergency Exit Sign VEROLITE Luminaire" data-product-url="product.html?slug=emergency-exit-sign">
+            <div class="ref-card-img-box">
+                <img src="images/emergency-hero-banner.jpg" alt="Emergency Exit Sign VEROLITE - VEROLITE Architectural Lighting" loading="lazy" width="400" height="400">
+            </div>
+            <div class="ref-card-info">
+                <h3 class="ref-card-title">
+                    <span class="prefix">VER-EMG-01</span>
+                    <span class="name">Emergency Exit Sign</span>
+                </h3>
+                <div class="ref-card-link">
+                    <span class="link-text">View Luminaire</span>
+                    <span class="link-arrow">&rarr;</span>
+                </div>
+            </div>
+        </a>
+    `;
+}
+
 // Sync Sanity Products into Category Listing Grids - Pure Sanity Source of Truth
 function initCategorySanityProducts() {
     const grid = document.querySelector('.ref-products-grid');
@@ -96,6 +117,7 @@ function initCategorySanityProducts() {
         'led-strip-light-drivers': 'led-strip-light-drivers',
         'led-phase-cut-dimmer': 'led-phase-cut-dimmer',
         'led-sensor-switches': 'led-sensor-switches',
+        'emergency-lights': 'emergency-lights',
     };
 
     const currentCat = categoryMap[filename] || filename;
@@ -121,6 +143,10 @@ function initCategorySanityProducts() {
         .then(res => res.json())
         .then(data => {
             if (!data.result || !data.result.length) {
+                if (currentCat === 'emergency-lights' || filename === 'emergency-lights') {
+                    renderEmergencyFallbackCard(grid);
+                    return;
+                }
                 grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888;">No products found in this category.</div>';
                 return;
             }
@@ -136,33 +162,35 @@ function initCategorySanityProducts() {
                 const modelBadge = prodModel || 'VEROLITE';
                 const targetUrl = 'product.html?slug=' + encodeURIComponent(prod.slug);
 
-                const card = document.createElement('div');
+                const card = document.createElement('a');
                 card.className = 'ref-card ref-card-visible';
-                card.style.cursor = 'pointer';
+                card.href = targetUrl;
+                card.setAttribute('aria-label', `${prodName} ${modelBadge} Luminaire`);
                 card.setAttribute('data-product-url', targetUrl);
                 card.innerHTML = `
                     <div class="ref-card-img-box">
-                        <img src="${imgUrl}" alt="${prodName}" loading="lazy">
+                        <img src="${imgUrl}" alt="${prodName} ${modelBadge} - VEROLITE Architectural Lighting" loading="lazy" width="400" height="400">
                     </div>
                     <div class="ref-card-info">
-                        <div class="ref-card-title">
+                        <h3 class="ref-card-title">
                             <span class="prefix">${modelBadge}</span>
                             <span class="name">${prodName}</span>
-                        </div>
+                        </h3>
                         <div class="ref-card-link">
                             <span class="link-text">View Luminaire</span>
                             <span class="link-arrow">&rarr;</span>
                         </div>
                     </div>
                 `;
-                card.addEventListener('click', function() {
-                    window.location.href = targetUrl;
-                });
                 grid.appendChild(card);
             });
         })
         .catch(err => {
             console.error('Sanity category load error:', err);
+            if (currentCat === 'emergency-lights' || filename === 'emergency-lights') {
+                renderEmergencyFallbackCard(grid);
+                return;
+            }
             grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888;">Unable to load products. Please try again later.</div>';
         });
 }
@@ -894,6 +922,7 @@ function initMobileNavSystem() {
         const isDriversActive = path.includes('led-strip-light-drivers') ||
                                 path.includes('led-phase-cut-dimmer') ||
                                 path.includes('led-sensor-switches');
+        const isEmergencyActive = path.includes('emergency-lights');
 
         backdrop = document.createElement('div');
         backdrop.id = 'mobileDrawerBackdrop';
@@ -939,13 +968,13 @@ function initMobileNavSystem() {
                         <div class="drawer-accordion-content" id="mobileProductsMenu" style="${isProductPage ? 'max-height: 1200px;' : ''}">
                             <!-- Primary Category 1: Indoor Lights -->
                             <div class="drawer-cat-group">
-                                <button type="button" class="drawer-cat-toggle ${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'is-open' : ''}" aria-expanded="${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'true' : 'false'}">
+                                <button type="button" class="drawer-cat-toggle ${isIndoorActive || (!isOutdoorActive && !isDriversActive && !isEmergencyActive) ? 'is-open' : ''}" aria-expanded="${isIndoorActive || (!isOutdoorActive && !isDriversActive && !isEmergencyActive) ? 'true' : 'false'}">
                                     <span>Indoor Lights</span>
                                     <svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                         <polyline points="6 9 12 15 18 9"></polyline>
                                     </svg>
                                 </button>
-                                <div class="drawer-cat-items" style="${isIndoorActive || (!isOutdoorActive && !isDriversActive) ? 'max-height: 400px;' : ''}">
+                                <div class="drawer-cat-items" style="${isIndoorActive || (!isOutdoorActive && !isDriversActive && !isEmergencyActive) ? 'max-height: 400px;' : ''}">
                                     <a href="recessed-led-down-lights.html" class="drawer-sub-item ${path.includes('recessed-led-down-lights') ? 'active-sub' : ''}">Recessed LED Down Lights</a>
                                     <a href="led-surface-down-lights.html" class="drawer-sub-item ${path.includes('led-surface-down-lights') ? 'active-sub' : ''}">LED Surface Down Lights</a>
                                     <a href="3phase-track-lights.html" class="drawer-sub-item ${path.includes('3phase-track-lights') ? 'active-sub' : ''}">3-Phase Track Lights</a>
@@ -981,6 +1010,19 @@ function initMobileNavSystem() {
                                     <a href="led-strip-light-drivers.html" class="drawer-sub-item ${path.includes('led-strip-light-drivers') ? 'active-sub' : ''}">LED Strip Light Drivers</a>
                                     <a href="led-phase-cut-dimmer.html" class="drawer-sub-item ${path.includes('led-phase-cut-dimmer') ? 'active-sub' : ''}">LED Phase Cut Dimmer</a>
                                     <a href="led-sensor-switches.html" class="drawer-sub-item ${path.includes('led-sensor-switches') ? 'active-sub' : ''}">LED Sensor Switches</a>
+                                </div>
+                            </div>
+
+                            <!-- Primary Category 4: Emergency Lights -->
+                            <div class="drawer-cat-group">
+                                <button type="button" class="drawer-cat-toggle ${isEmergencyActive ? 'is-open' : ''}" aria-expanded="${isEmergencyActive ? 'true' : 'false'}">
+                                    <span>Emergency Lights</span>
+                                    <svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="drawer-cat-items" style="${isEmergencyActive ? 'max-height: 200px;' : ''}">
+                                    <a href="emergency-lights.html" class="drawer-sub-item ${path.includes('emergency-lights') ? 'active-sub' : ''}">Emergency Lights</a>
                                 </div>
                             </div>
                         </div>
@@ -1125,7 +1167,8 @@ function initProductsCascadingDropdown() {
         'led-outdoor-flexible-neon-light': 'outdoor',
         'led-strip-light-drivers': 'drivers',
         'led-phase-cut-dimmer': 'drivers',
-        'led-sensor-switches': 'drivers'
+        'led-sensor-switches': 'drivers',
+        'emergency-lights': 'emergency'
     };
 
     const initialActiveGroup = categoryToGroup[filename] || 'indoor';

@@ -272,6 +272,8 @@
 }
 
 .section-label {
+    margin: 0 0 4px 0;
+    font-family: inherit;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -280,7 +282,6 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 4px;
 }
 
 .section-label::after {

@@ -1,27 +1,90 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEROLITE</title>
-    <meta name="description" content="Discover Verolite - Light beyond imagination. Illuminate every moment with our premium lighting collections.">
+    <title>VEROLITE | Premium Architectural LED Lighting Solutions &amp; Luminaires</title>
+    <meta name="description" content="Verolite delivers luxury architectural LED lighting solutions, precision downlights, 3-phase track lights, magnetic track systems, and bespoke luminaires across the UK.">
+    <link rel="canonical" href="https://verolite.co.uk/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- Google Search Console Verification Placeholder -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VEROLITE">
+    <meta property="og:title" content="VEROLITE | Premium Architectural LED Lighting Solutions &amp; Luminaires">
+    <meta property="og:description" content="Verolite delivers luxury architectural LED lighting solutions, precision downlights, 3-phase track lights, magnetic track systems, and bespoke luminaires across the UK.">
+    <meta property="og:url" content="https://verolite.co.uk/">
+    <meta property="og:image" content="https://verolite.co.uk/images/hero-bg.png">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VEROLITE | Premium Architectural LED Lighting Solutions &amp; Luminaires">
+    <meta name="twitter:description" content="Verolite delivers luxury architectural LED lighting solutions, precision downlights, 3-phase track lights, magnetic track systems, and bespoke luminaires across the UK.">
+    <meta name="twitter:image" content="https://verolite.co.uk/images/hero-bg.png">
+
     <link rel="stylesheet" href="style.css?v=mega1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
+
+    <!-- Structured Data: Organization & WebSite (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://verolite.co.uk/#organization",
+          "name": "VEROLITE",
+          "legalName": "VEROLITE",
+          "url": "https://verolite.co.uk/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://verolite.co.uk/logo.png",
+            "caption": "VEROLITE Architectural Lighting"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+44-20-7946-0920",
+            "contactType": "customer service",
+            "email": "info@verolite.co.uk",
+            "areaServed": ["GB", "EU"],
+            "availableLanguage": ["en"]
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "London",
+            "addressCountry": "GB"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://verolite.co.uk/#website",
+          "url": "https://verolite.co.uk/",
+          "name": "VEROLITE Architectural Lighting",
+          "description": "Premium Architectural LED Lighting Solutions & Luminaires",
+          "publisher": {
+            "@id": "https://verolite.co.uk/#organization"
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <!-- Hero Screen (100vh First Page) -->
     <div class="hero-screen">
         <!-- Background Hero Image -->
         <div class="hero-bg-image-wrapper">
-            <img src="images/hero-bg.png" alt="Verolite Modern Architectural Lighting" class="hero-bg-image">
+            <img src="images/hero-bg.png" alt="Verolite Modern Architectural LED Lighting - Engineering & Contemporary Design" class="hero-bg-image" width="1920" height="1080" fetchpriority="high">
             <div class="hero-image-overlay"></div>
         </div>
 
         <header class="navbar">
             <a href="#" class="logo-link" aria-label="VEROLITE">
-                <img src="logo.png" alt="VEROLITE" class="logo-img">
+                <img src="logo.png" alt="VEROLITE Architectural Lighting" class="logo-img" width="180" height="42">
             </a>
             <nav>
                 <a href="#" class="active">Home</a>
@@ -53,6 +116,12 @@
                                     <polyline points="1.5 1.5 5 5 1.5 8.5"></polyline>
                                 </svg>
                             </button>
+                            <button type="button" class="primary-cat-item" role="tab" aria-selected="false" data-category="emergency" id="tab-emergency">
+                                <span class="cat-label">Emergency Lights</span>
+                                <svg class="cat-chevron" width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="1.5 1.5 5 5 1.5 8.5"></polyline>
+                                </svg>
+                            </button>
                         </div>
                         <div class="mega-menu-subpanels">
                             <div class="mega-subpanel is-active" data-panel="indoor" role="tabpanel" aria-labelledby="tab-indoor">
@@ -79,6 +148,12 @@
                                     <a href="led-strip-light-drivers.html" class="dropdown-item">LED Strip Light Drivers</a>
                                     <a href="led-phase-cut-dimmer.html" class="dropdown-item">LED Phase Cut Dimmer</a>
                                     <a href="led-sensor-switches.html" class="dropdown-item">LED Sensor Switches</a>
+                                </div>
+                            </div>
+                            <div class="mega-subpanel" data-panel="emergency" role="tabpanel" aria-labelledby="tab-emergency">
+                                <div class="subpanel-header">Emergency Lights</div>
+                                <div class="subpanel-links">
+                                    <a href="emergency-lights.html" class="dropdown-item">Emergency Lights</a>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +193,7 @@
 
     <!-- Collections Carousel Section -->
     <section class="collections-section" id="collections" aria-label="Collections Carousel">
+        <h2 class="visually-hidden">Architectural LED Lighting Collections</h2>
         <div class="carousel-wrapper">
 
             <div class="carousel-track-container" id="carouselContainer">
@@ -125,71 +201,77 @@
                     <!-- Set 1 -->
                     <a href="recessed-led-down-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/recessed-hero-banner.jpg?v=v2" alt="Recessed LED Down Lights">
+                            <img src="images/recessed-hero-banner.jpg?v=v2" alt="Recessed LED Downlights - Verolite Architectural Collection" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">RECESSED LED DOWN LIGHTS</div>
                     </a>
                     <a href="led-surface-down-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/collection-2.jpg?v=v5" alt="LED Surface Down Lights">
+                            <img src="images/collection-2.jpg?v=v5" alt="LED Surface Downlights - Verolite Architectural Collection" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED SURFACE DOWN LIGHTS</div>
                     </a>
                     <a href="3phase-track-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/collection-track.jpg?v=full" alt="3-Phase Track Lights">
+                            <img src="images/collection-track.jpg?v=full" alt="3-Phase Track Lights - Verolite Commercial Lighting" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">3-PHASE TRACK LIGHTS</div>
                     </a>
                     <a href="led-garden-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/collection-garden.jpg?v=full" alt="LED Garden Lights">
+                            <img src="images/collection-garden.jpg?v=full" alt="LED Garden Lights - Verolite Outdoor Landscape Solutions" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED GARDEN LIGHTS</div>
                     </a>
                     <a href="led-strip-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/strip-hero-banner.jpg?v=full" alt="LED Strip Lights">
+                            <img src="images/strip-hero-banner.jpg?v=full" alt="LED Strip Lights - Verolite Architectural Linear Tape" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED STRIP LIGHTS</div>
                     </a>
                     <a href="led-outdoor-flexible-neon-light.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/outdoor-hero-banner.jpg?v=full" alt="LED Outdoor Flexible Neon Light">
+                            <img src="images/outdoor-hero-banner.jpg?v=full" alt="LED Outdoor Flexible Neon Light - Verolite Exterior Flex" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED OUTDOOR FLEXIBLE NEON LIGHT</div>
                     </a>
                     <a href="led-magnetic-track-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/magnetic-hero-banner.jpg?v=full" alt="LED Magnetic Track Lights">
+                            <img src="images/magnetic-hero-banner.jpg?v=full" alt="LED Magnetic Track Lights - Verolite Precision Track Systems" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED MAGNETIC TRACK LIGHTS</div>
                     </a>
                     <a href="office-linear-lights.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/office-hero-banner.jpg?v=full" alt="Office Lights">
+                            <img src="images/office-hero-banner.jpg?v=full" alt="Office Linear Lights - Verolite Commercial Workplace Luminaires" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">OFFICE LIGHTS</div>
                     </a>
                     <a href="led-strip-light-drivers.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/collection-driver.jpg?v=full" alt="LED Strip Light Drivers">
+                            <img src="images/collection-driver.jpg?v=full" alt="LED Strip Light Drivers - Verolite Architectural Power Supplies" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED STRIP LIGHT DRIVERS</div>
                     </a>
                     <a href="led-phase-cut-dimmer.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/collection-dimmer.jpg?v=square" alt="LED Phase Cut Dimmer">
+                            <img src="images/collection-dimmer.jpg?v=square" alt="LED Phase Cut Dimmer - Verolite Rotary Dimming Switches" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED PHASE CUT DIMMER</div>
                     </a>
                     <a href="led-sensor-switches.html" class="collection-card" tabindex="0">
                         <div class="card-image-box">
-                            <img src="images/sensors/sensor-hero-banner.jpg?v=full" alt="LED Sensor Switches">
+                            <img src="images/sensors/sensor-hero-banner.jpg?v=full" alt="LED Sensor Switches - Verolite Motion & Touch Lighting Controls" width="480" height="600" loading="lazy">
                         </div>
                         <div class="card-title">LED SENSOR SWITCHES</div>
                     </a>
 
+                    <a href="emergency-lights.html" class="collection-card" tabindex="0">
+                        <div class="card-image-box">
+                            <img src="images/emergency-hero-banner.jpg?v=full" alt="Emergency Lights - Verolite Safety &amp; Exit Lighting Solutions" width="480" height="600" loading="lazy">
+                        </div>
+                        <div class="card-title">EMERGENCY LIGHTS</div>
+                    </a>
                     <!-- Set 2 (for seamless continuous infinite looping) -->
                     <a href="recessed-led-down-lights.html" class="collection-card" aria-hidden="true" tabindex="-1">
                         <div class="card-image-box">
@@ -256,6 +338,12 @@
                             <img src="images/sensors/sensor-hero-banner.jpg?v=full" alt="LED Sensor Switches">
                         </div>
                         <div class="card-title">LED SENSOR SWITCHES</div>
+                    </a>
+                    <a href="emergency-lights.html" class="collection-card" aria-hidden="true" tabindex="-1">
+                        <div class="card-image-box">
+                            <img src="images/emergency-hero-banner.jpg?v=full" alt="Emergency Lights">
+                        </div>
+                        <div class="card-title">EMERGENCY LIGHTS</div>
                     </a>
                 </div>
             </div>
@@ -334,7 +422,7 @@
                 <!-- Col 1: Brand Info -->
                 <div class="footer-col footer-brand-col">
                     <a href="index.html" class="footer-logo-link" aria-label="VEROLITE Home">
-                        <img src="logo.png" alt="VEROLITE" class="footer-logo">
+                        <img src="logo.png" alt="VEROLITE Architectural Lighting" class="footer-logo" width="180" height="42">
                     </a>
                     <p class="footer-brand-desc">
                         Engineering bespoke lighting fixtures that merge innovative LED optics with sculptural architectural elegance. Light beyond imagination.
