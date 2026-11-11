@@ -1,5 +1,7 @@
 import { defineField, defineType } from 'sanity'
 import { createVariantFieldComponent } from './VariantField'
+import { categoryGroup } from './categoryGroup'
+import { category } from './category'
 
 export const product = defineType({
     name: 'product',
@@ -35,26 +37,10 @@ export const product = defineType({
 
         defineField({
             name: 'category',
-            title: 'Category',
-            type: 'string',
-            description: 'Select the website category where this product belongs',
-            options: {
-                list: [
-                    { title: 'Recessed LED Down Lights', value: 'recessed-led-down-lights' },
-                    { title: 'LED Surface Down Lights', value: 'led-surface-down-lights' },
-                    { title: '3-Phase Track Lights', value: '3phase-track-lights' },
-                    { title: 'LED Garden Lights', value: 'led-garden-lights' },
-                    { title: 'LED Strip Lights', value: 'led-strip-lights' },
-                    { title: 'LED Outdoor Flexible Neon Light', value: 'led-outdoor-flexible-neon-light' },
-                    { title: 'LED Magnetic Track Lights', value: 'led-magnetic-track-lights' },
-                    { title: 'Office Linear Lights', value: 'office-linear-lights' },
-                    { title: 'LED Strip Light Drivers', value: 'led-strip-light-drivers' },
-                    { title: 'LED Phase Cut Dimmer', value: 'led-phase-cut-dimmer' },
-                    { title: 'LED Sensor Switches', value: 'led-sensor-switches' },
-                    { title: 'Emergency Lights', value: 'emergency-lights' },
-                ],
-                layout: 'dropdown',
-            },
+            title: 'Subcategory (Website Category)',
+            type: 'reference',
+            to: [{ type: 'category' }],
+            description: 'Select an existing category or click "+ Create new" to add a new category.',
             validation: (Rule) => Rule.required(),
         }),
 
@@ -340,4 +326,4 @@ export const product = defineType({
         },
     },
 })
-export const schemaTypes = [product]
+export const schemaTypes = [product, categoryGroup, category]

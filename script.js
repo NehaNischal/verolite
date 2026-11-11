@@ -67,12 +67,156 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Universal Mobile Navigation System
     initMobileNavSystem();
+
+    // Dynamically refresh nav menus from Sanity (adds new categories automatically)
+    initDynamicNavFromSanity();
 });
 
 // Product card click navigation is handled per-card in initCategorySanityProducts
 function initProductCardClickNavigation() {
     // Sanity-generated cards attach their own click handlers with the correct slug URL.
     // This function is intentionally a no-op to avoid interfering with those handlers.
+}
+
+// ─── Dynamic Navigation from Sanity ─────────────────────────────────────────
+// Fetches primary categories and subcategories from Sanity and rebuilds
+// both the desktop mega-menu and the mobile drawer so new categories added
+// in Sanity Studio automatically appear on the website without code changes.
+function initDynamicNavFromSanity() {
+    const SANITY_PROJECT_ID = '5nckxq6b';
+    const SANITY_DATASET = 'production';
+
+    // Query: all subcategories with their parent group info, ordered by parent order then sub order
+    const groq = encodeURIComponent(`*[_type == "category"]{_id, title, pageUrl, "slug": slug.current, "parentSlug": parentGroup->slug.current, "parentTitle": parentGroup->title, "parentOrder": parentGroup->order, "subOrder": order} | order(parentOrder asc, subOrder asc)`);
+    const groupQuery = encodeURIComponent(`*[_type == "categoryGroup"] | order(order asc){_id, title, "slug": slug.current, order}`);
+
+    const baseUrl = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}`;
+
+    const currentPath = window.location.pathname.toLowerCase();
+    const currentFile = currentPath.split('/').pop().replace('.html', '') || '';
+
+    Promise.all([
+        fetch(`${baseUrl}?query=${groq}`, { cache: 'no-store' }).then(r => r.json()),
+        fetch(`${baseUrl}?query=${groupQuery}`, { cache: 'no-store' }).then(r => r.json())
+    ]).then(([subData, groupData]) => {
+        const subcategories = (subData.result || []).filter(c => c.slug && c.pageUrl && c.parentSlug);
+        const primaryGroups = (groupData.result || []);
+        if (!primaryGroups.length || !subcategories.length) return;
+
+        // Build lookup: parentSlug -> array of subcategories
+        const groupMap = {};
+        primaryGroups.forEach(g => { groupMap[g.slug] = { ...g, subs: [] }; });
+        subcategories.forEach(sub => {
+            if (groupMap[sub.parentSlug]) groupMap[sub.parentSlug].subs.push(sub);
+        });
+
+        const groups = primaryGroups.map(g => groupMap[g.slug]).filter(Boolean);
+
+        // ── Rebuild Desktop Mega Menu ─────────────────────────────────────
+        const navDropdowns = document.querySelectorAll('.nav-dropdown');
+        navDropdowns.forEach(dropdown => {
+            const primaryContainer = dropdown.querySelector('.mega-menu-primary');
+            const subpanelsContainer = dropdown.querySelector('.mega-menu-subpanels');
+            if (!primaryContainer || !subpanelsContainer) return;
+
+            // Determine which group is active based on current page subcategory
+            let activeGroupSlug = groups.length ? groups[0].slug : null;
+            groups.forEach(g => {
+                g.subs.forEach(sub => {
+                    const subFile = (sub.pageUrl || '').replace('.html', '');
+                    if (subFile && subFile === currentFile) activeGroupSlug = g.slug;
+                });
+            });
+
+            // Render primary category tabs
+            const chevronSVG = `<svg class="cat-chevron" width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1.5 1.5 5 5 1.5 8.5"></polyline></svg>`;
+            primaryContainer.innerHTML = groups.map((g, i) => {
+                const isActive = g.slug === activeGroupSlug;
+                return `<button type="button" class="primary-cat-item${isActive ? ' is-active' : ''}" role="tab" aria-selected="${isActive}" data-category="${g.slug}" id="tab-${g.slug}" tabindex="${isActive ? '0' : '-1'}">`
+                    + `<span class="cat-label">${escapeHtml(g.title)}</span>${chevronSVG}</button>`;
+            }).join('');
+
+            // Render subpanels
+            subpanelsContainer.innerHTML = groups.map(g => {
+                const isActive = g.slug === activeGroupSlug;
+                const links = g.subs.map(sub => {
+                    const subFile = (sub.pageUrl || '').replace('.html', '');
+                    const isCurrent = subFile && subFile === currentFile;
+                    return `<a href="${escapeHtml(sub.pageUrl)}" class="dropdown-item${isCurrent ? ' is-current-page' : ''}">${escapeHtml(sub.title)}</a>`;
+                }).join('');
+                return `<div class="mega-subpanel${isActive ? ' is-active' : ''}" data-panel="${g.slug}" role="tabpanel" aria-labelledby="tab-${g.slug}">`
+                    + `<div class="subpanel-header">${escapeHtml(g.title)}</div>`
+                    + `<div class="subpanel-links">${links}</div></div>`;
+            }).join('');
+
+            // Re-attach tab switching behaviour to new buttons
+            const newPrimaryButtons = Array.from(dropdown.querySelectorAll('.primary-cat-item'));
+            const newSubpanels = Array.from(dropdown.querySelectorAll('.mega-subpanel'));
+            newPrimaryButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => switchDesktopTab(btn, newPrimaryButtons, newSubpanels));
+                btn.addEventListener('click', () => switchDesktopTab(btn, newPrimaryButtons, newSubpanels));
+                btn.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        switchDesktopTab(btn, newPrimaryButtons, newSubpanels);
+                    }
+                });
+            });
+        });
+
+        // ── Rebuild Mobile Drawer Product Categories ──────────────────────
+        const mobileMenu = document.getElementById('mobileProductsMenu');
+        if (!mobileMenu) return;
+
+        const isProductPage = !['', 'index', 'about', 'contact'].includes(currentFile);
+
+        mobileMenu.innerHTML = groups.map(g => {
+            const isGroupActive = g.subs.some(sub => (sub.pageUrl || '').replace('.html', '') === currentFile);
+            const links = g.subs.map(sub => {
+                const subFile = (sub.pageUrl || '').replace('.html', '');
+                const isCurrent = subFile && subFile === currentFile;
+                return `<a href="${escapeHtml(sub.pageUrl)}" class="drawer-sub-item${isCurrent ? ' active-sub' : ''}">${escapeHtml(sub.title)}</a>`;
+            }).join('');
+            return `<div class="drawer-cat-group">`
+                + `<button type="button" class="drawer-cat-toggle${isGroupActive ? ' is-open' : ''}" aria-expanded="${isGroupActive}">`
+                + `<span>${escapeHtml(g.title)}</span>`
+                + `<svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>`
+                + `</button>`
+                + `<div class="drawer-cat-items"${isGroupActive ? ' style="max-height:600px;"' : ''}>${links}</div>`
+                + `</div>`;
+        }).join('');
+
+        // Re-attach accordion toggle behaviour for new mobile items
+        mobileMenu.querySelectorAll('.drawer-cat-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const isOpen = btn.classList.contains('is-open');
+                btn.classList.toggle('is-open', !isOpen);
+                btn.setAttribute('aria-expanded', String(!isOpen));
+                const items = btn.nextElementSibling;
+                if (items) items.style.maxHeight = isOpen ? '' : '600px';
+            });
+        });
+
+    }).catch(err => {
+        // Silently fail — hardcoded fallback menu remains in place
+        console.warn('Dynamic nav from Sanity failed (fallback menu active):', err);
+    });
+}
+
+function switchDesktopTab(btn, allButtons, allPanels) {
+    const catKey = btn.getAttribute('data-category');
+    allButtons.forEach(b => {
+        const isTarget = b.getAttribute('data-category') === catKey;
+        b.classList.toggle('is-active', isTarget);
+        b.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        b.setAttribute('tabindex', isTarget ? '0' : '-1');
+    });
+    allPanels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-panel') === catKey));
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function renderEmergencyFallbackCard(grid) {
@@ -128,14 +272,7 @@ function initCategorySanityProducts() {
 
     const SANITY_PROJECT_ID = '5nckxq6b';
     const SANITY_DATASET = 'production';
-    const groq = encodeURIComponent(`*[_type == "product" && !(_id in path("drafts.**")) && (category == "${currentCat}" || category == "${filename}")] | order(name asc){
-        _id,
-        name,
-        model,
-        "slug": slug.current,
-        "imageUrl": mainImage.asset->url,
-        category
-    }`);
+    const groq = encodeURIComponent(`*[_type == "product" && !(_id in path("drafts.**")) && (category == "${currentCat}" || category == "${filename}" || category->slug.current == "${currentCat}" || category->slug.current == "${filename}" || categorySlug == "${currentCat}" || categorySlug == "${filename}")] | order(name asc){_id, name, model, "slug": slug.current, "imageUrl": mainImage.asset->url, "category": coalesce(category->slug.current, category, categorySlug)}`);
 
     const endpoint = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}?query=${groq}`;
 
