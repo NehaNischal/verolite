@@ -87,30 +87,60 @@ function initDynamicNavFromSanity() {
     const SANITY_DATASET = 'production';
 
     // Query: all subcategories with their parent group info, ordered by parent order then sub order
-    const groq = encodeURIComponent(`*[_type == "category"]{_id, title, pageUrl, "slug": slug.current, "parentSlug": parentGroup->slug.current, "parentTitle": parentGroup->title, "parentOrder": parentGroup->order, "subOrder": order} | order(parentOrder asc, subOrder asc)`);
-    const groupQuery = encodeURIComponent(`*[_type == "categoryGroup"] | order(order asc){_id, title, "slug": slug.current, order}`);
+    const groq = encodeURIComponent(`*[_type == "category" && !(_id in path("drafts.**"))]{_id, title, pageUrl, "slug": slug.current, "parentSlug": parentGroup->slug.current, "parentRef": parentGroup._ref, "parentTitle": parentGroup->title, "parentOrder": coalesce(parentGroup->order, 99), "subOrder": coalesce(order, 99)} | order(parentOrder asc, subOrder asc)`);
+    const groupQuery = encodeURIComponent(`*[_type == "categoryGroup" && !(_id in path("drafts.**"))] | order(order asc){_id, title, "slug": slug.current, order}`);
 
     const baseUrl = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}`;
 
     const currentPath = window.location.pathname.toLowerCase();
     const currentFile = currentPath.split('/').pop().replace('.html', '') || '';
+    const currentCatParam = new URLSearchParams(window.location.search).get('cat') || '';
 
     Promise.all([
         fetch(`${baseUrl}?query=${groq}`, { cache: 'no-store' }).then(r => r.json()),
         fetch(`${baseUrl}?query=${groupQuery}`, { cache: 'no-store' }).then(r => r.json())
     ]).then(([subData, groupData]) => {
-        const subcategories = (subData.result || []).filter(c => c.slug && c.pageUrl && c.parentSlug);
         const primaryGroups = (groupData.result || []);
-        if (!primaryGroups.length || !subcategories.length) return;
+        if (!primaryGroups.length) return;
 
-        // Build lookup: parentSlug -> array of subcategories
+        // Map parent groups by slug AND by document _id
         const groupMap = {};
-        primaryGroups.forEach(g => { groupMap[g.slug] = { ...g, subs: [] }; });
-        subcategories.forEach(sub => {
-            if (groupMap[sub.parentSlug]) groupMap[sub.parentSlug].subs.push(sub);
+        primaryGroups.forEach(g => {
+            const entry = { ...g, subs: [] };
+            if (g.slug) groupMap[g.slug] = entry;
+            if (g._id) groupMap[g._id] = entry;
+            const cleanId = (g._id || '').replace(/^drafts\./, '');
+            if (cleanId) groupMap[cleanId] = entry;
         });
 
-        const groups = primaryGroups.map(g => groupMap[g.slug]).filter(Boolean);
+        // Subcategories: filter valid, automatically provide fallback pageUrl if empty
+        const rawSubs = (subData.result || []).filter(c => c && c.slug);
+        rawSubs.forEach(sub => {
+            const pSlug = sub.parentSlug;
+            const pRef = (sub.parentRef || '').replace(/^drafts\./, '');
+            const targetGroup = (pSlug && groupMap[pSlug]) || (pRef && groupMap[pRef]);
+            if (targetGroup) {
+                const resolvedUrl = (sub.pageUrl && sub.pageUrl.trim())
+                    ? sub.pageUrl.trim()
+                    : `category.html?cat=${encodeURIComponent(sub.slug)}`;
+
+                targetGroup.subs.push({
+                    ...sub,
+                    pageUrl: resolvedUrl
+                });
+            }
+        });
+
+        // Deduplicate groups in order
+        const seen = new Set();
+        const groups = [];
+        primaryGroups.forEach(g => {
+            const entry = groupMap[g.slug] || groupMap[g._id];
+            if (entry && !seen.has(entry.slug || entry._id)) {
+                seen.add(entry.slug || entry._id);
+                groups.push(entry);
+            }
+        });
 
         // ── Rebuild Desktop Mega Menu ─────────────────────────────────────
         const navDropdowns = document.querySelectorAll('.nav-dropdown');
@@ -119,12 +149,16 @@ function initDynamicNavFromSanity() {
             const subpanelsContainer = dropdown.querySelector('.mega-menu-subpanels');
             if (!primaryContainer || !subpanelsContainer) return;
 
-            // Determine which group is active based on current page subcategory
+            // Determine which group is active based on current page or ?cat=
             let activeGroupSlug = groups.length ? groups[0].slug : null;
             groups.forEach(g => {
                 g.subs.forEach(sub => {
                     const subFile = (sub.pageUrl || '').replace('.html', '');
-                    if (subFile && subFile === currentFile) activeGroupSlug = g.slug;
+                    if (currentCatParam && sub.slug === currentCatParam) {
+                        activeGroupSlug = g.slug;
+                    } else if (!currentCatParam && subFile && subFile === currentFile) {
+                        activeGroupSlug = g.slug;
+                    }
                 });
             });
 
@@ -141,12 +175,12 @@ function initDynamicNavFromSanity() {
                 const isActive = g.slug === activeGroupSlug;
                 const links = g.subs.map(sub => {
                     const subFile = (sub.pageUrl || '').replace('.html', '');
-                    const isCurrent = subFile && subFile === currentFile;
+                    const isCurrent = currentCatParam ? (sub.slug === currentCatParam) : (subFile && subFile === currentFile);
                     return `<a href="${escapeHtml(sub.pageUrl)}" class="dropdown-item${isCurrent ? ' is-current-page' : ''}">${escapeHtml(sub.title)}</a>`;
                 }).join('');
                 return `<div class="mega-subpanel${isActive ? ' is-active' : ''}" data-panel="${g.slug}" role="tabpanel" aria-labelledby="tab-${g.slug}">`
                     + `<div class="subpanel-header">${escapeHtml(g.title)}</div>`
-                    + `<div class="subpanel-links">${links}</div></div>`;
+                    + `<div class="subpanel-links">${links || '<div style="padding:10px 14px;color:#888;font-size:0.85rem;">No subcategories yet</div>'}</div></div>`;
             }).join('');
 
             // Re-attach tab switching behaviour to new buttons
@@ -168,13 +202,14 @@ function initDynamicNavFromSanity() {
         const mobileMenu = document.getElementById('mobileProductsMenu');
         if (!mobileMenu) return;
 
-        const isProductPage = !['', 'index', 'about', 'contact'].includes(currentFile);
-
         mobileMenu.innerHTML = groups.map(g => {
-            const isGroupActive = g.subs.some(sub => (sub.pageUrl || '').replace('.html', '') === currentFile);
+            const isGroupActive = g.subs.some(sub => {
+                const subFile = (sub.pageUrl || '').replace('.html', '');
+                return currentCatParam ? (sub.slug === currentCatParam) : (subFile === currentFile);
+            });
             const links = g.subs.map(sub => {
                 const subFile = (sub.pageUrl || '').replace('.html', '');
-                const isCurrent = subFile && subFile === currentFile;
+                const isCurrent = currentCatParam ? (sub.slug === currentCatParam) : (subFile === currentFile);
                 return `<a href="${escapeHtml(sub.pageUrl)}" class="drawer-sub-item${isCurrent ? ' active-sub' : ''}">${escapeHtml(sub.title)}</a>`;
             }).join('');
             return `<div class="drawer-cat-group">`
@@ -182,7 +217,7 @@ function initDynamicNavFromSanity() {
                 + `<span>${escapeHtml(g.title)}</span>`
                 + `<svg class="drawer-cat-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>`
                 + `</button>`
-                + `<div class="drawer-cat-items"${isGroupActive ? ' style="max-height:600px;"' : ''}>${links}</div>`
+                + `<div class="drawer-cat-items"${isGroupActive ? ' style="max-height:600px;"' : ''}>${links || '<div style="padding:8px 16px;color:#888;font-size:0.8rem;">No subcategories yet</div>'}</div>`
                 + `</div>`;
         }).join('');
 
@@ -245,7 +280,10 @@ function initCategorySanityProducts() {
     const grid = document.querySelector('.ref-products-grid');
     if (!grid) return;
 
-    // Detect current category from page filename
+    // Detect category from URL param (?cat=slug) OR page filename
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('cat') ? urlParams.get('cat').trim() : '';
+
     const path = window.location.pathname.toLowerCase();
     const filename = path.split('/').pop().replace('.html', '') || '';
 
@@ -264,15 +302,35 @@ function initCategorySanityProducts() {
         'emergency-lights': 'emergency-lights',
     };
 
-    const currentCat = categoryMap[filename] || filename;
+    const currentCat = catParam || categoryMap[filename] || (filename !== 'category' ? filename : '');
     if (!currentCat) return;
+
+    const SANITY_PROJECT_ID = '5nckxq6b';
+    const SANITY_DATASET = 'production';
+
+    // If on dynamic category page (catParam present), fetch category info from Sanity to populate hero title
+    if (catParam) {
+        const catInfoQuery = encodeURIComponent(`*[_type == "category" && !(_id in path("drafts.**")) && slug.current == "${catParam}"][0]{title, description, "parentTitle": parentGroup->title}`);
+        fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}?query=${catInfoQuery}`, { cache: 'no-store' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.result && data.result.title) {
+                    const titleEl = document.querySelector('.recessed-hero-main-title') || document.querySelector('.category-hero-title');
+                    if (titleEl) titleEl.textContent = data.result.title.toUpperCase();
+                    document.title = `${data.result.title} | VEROLITE Architectural Lighting`;
+                    const breadcrumb = document.querySelector('.category-breadcrumb-current');
+                    if (breadcrumb) breadcrumb.textContent = data.result.title;
+                    const descEl = document.querySelector('.category-hero-desc');
+                    if (descEl && data.result.description) descEl.textContent = data.result.description;
+                }
+            })
+            .catch(() => {});
+    }
 
     // Show simple loading text
     grid.innerHTML = '<div class="category-loading" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: inherit; font-size: 1.1rem; color: #888; letter-spacing: 0.05em;">Loading products...</div>';
 
-    const SANITY_PROJECT_ID = '5nckxq6b';
-    const SANITY_DATASET = 'production';
-    const groq = encodeURIComponent(`*[_type == "product" && !(_id in path("drafts.**")) && (category == "${currentCat}" || category == "${filename}" || category->slug.current == "${currentCat}" || category->slug.current == "${filename}" || categorySlug == "${currentCat}" || categorySlug == "${filename}")] | order(name asc){_id, name, model, "slug": slug.current, "imageUrl": mainImage.asset->url, "category": coalesce(category->slug.current, category, categorySlug)}`);
+    const groq = encodeURIComponent(`*[_type == "product" && !(_id in path("drafts.**")) && (category == "${currentCat}" || category == "${filename}" || category->slug.current == "${currentCat}" || category->slug.current == "${filename}" || categorySlug == "${currentCat}" || categorySlug == "${filename}" || category._ref == "${currentCat}" || category._ref in *[_type == "category" && slug.current == "${currentCat}"]._id)] | order(name asc){_id, name, model, "slug": slug.current, "imageUrl": mainImage.asset->url, "category": coalesce(category->slug.current, category, categorySlug)}`);
 
     const endpoint = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/query/${SANITY_DATASET}?query=${groq}`;
 
