@@ -2,6 +2,7 @@
 
 scratch_*/
 *.mp4
+!new hero.mp4
 node_modules/
 .next/
 dist/

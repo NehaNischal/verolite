@@ -3,8 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure Hero Video loads and plays fresh stream
     const heroVideo = document.querySelector('.hero-bg-video');
     if (heroVideo) {
-        heroVideo.load();
+        heroVideo.muted = true;
         heroVideo.play().catch(() => {});
+        // Fallback play on first interaction if autoplay policy delayed playback
+        const triggerPlay = () => {
+            if (heroVideo.paused) heroVideo.play().catch(() => {});
+            window.removeEventListener('click', triggerPlay);
+            window.removeEventListener('touchstart', triggerPlay);
+            window.removeEventListener('scroll', triggerPlay);
+        };
+        window.addEventListener('click', triggerPlay, { passive: true });
+        window.addEventListener('touchstart', triggerPlay, { passive: true });
+        window.addEventListener('scroll', triggerPlay, { passive: true });
     }
 
     // Initialize Universal Letter-by-Letter Entrance Animation
