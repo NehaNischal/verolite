@@ -1,21 +1,53 @@
 // Continuous Seamless Infinite Carousel & Animations for Verolite
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure Hero Video loads and plays fresh stream
-    const heroVideo = document.querySelector('.hero-bg-video');
-    if (heroVideo) {
-        heroVideo.muted = true;
-        heroVideo.play().catch(() => {});
-        // Fallback play on first interaction if autoplay policy delayed playback
-        const triggerPlay = () => {
-            if (heroVideo.paused) heroVideo.play().catch(() => {});
-            window.removeEventListener('click', triggerPlay);
-            window.removeEventListener('touchstart', triggerPlay);
-            window.removeEventListener('scroll', triggerPlay);
-        };
-        window.addEventListener('click', triggerPlay, { passive: true });
-        window.addEventListener('touchstart', triggerPlay, { passive: true });
-        window.addEventListener('scroll', triggerPlay, { passive: true });
+    // --- Responsive Hero Video Switcher ---
+    const desktopVideo = document.querySelector('.hero-bg-video--desktop');
+    const mobileVideo  = document.querySelector('.hero-bg-video--mobile');
+
+    function isMobile() {
+        return window.innerWidth <= 768 ||
+               (window.innerWidth <= 1024 && window.matchMedia('(orientation: portrait)').matches);
     }
+
+    function activateVideo(vid) {
+        if (!vid) return;
+        vid.muted = true;
+        vid.play().catch(() => {});
+    }
+
+    function handleBreakpoint() {
+        if (isMobile()) {
+            if (desktopVideo && !desktopVideo.paused) desktopVideo.pause();
+            if (mobileVideo) { mobileVideo.load(); activateVideo(mobileVideo); }
+        } else {
+            if (mobileVideo && !mobileVideo.paused) mobileVideo.pause();
+            if (desktopVideo) { desktopVideo.load(); activateVideo(desktopVideo); }
+        }
+    }
+
+    handleBreakpoint();
+
+    // Fallback: play active video on first user interaction
+    const triggerPlay = () => {
+        const active = isMobile() ? mobileVideo : desktopVideo;
+        if (active && active.paused) active.play().catch(() => {});
+        window.removeEventListener('click', triggerPlay);
+        window.removeEventListener('touchstart', triggerPlay);
+        window.removeEventListener('scroll', triggerPlay);
+    };
+    window.addEventListener('click', triggerPlay, { passive: true });
+    window.addEventListener('touchstart', triggerPlay, { passive: true });
+    window.addEventListener('scroll', triggerPlay, { passive: true });
+
+    // Re-evaluate on resize / orientation change
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(handleBreakpoint, 200);
+    });
+    window.addEventListener('orientationchange', () => {
+        setTimeout(handleBreakpoint, 300);
+    });
 
     // Initialize Universal Letter-by-Letter Entrance Animation
     initLetterCascadeAnimation();
